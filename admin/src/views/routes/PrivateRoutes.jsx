@@ -1,35 +1,26 @@
 import { Navigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
-import { refreshToken } from "../../store/auth/authSlice";
+import { useSelector } from "react-redux";
 
-export const PrivateRoutes = ({ children }) => {
-  // Check if user is authenticated from Redux state
+export const PrivateRoutes = ({ children, allowedRoles }) => {
   const { user, isLoading } = useSelector((state) => state.auth);
-  const [isAuthChecked, setIsAuthChecked] = useState(false);
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    // If we don't have a user, try to refresh the token once
-    if (!user && !isAuthChecked) {
-      setIsAuthChecked(true);
-      dispatch(refreshToken())
-        .unwrap()
-        .catch((error) => {
-          console.error("Failed to refresh token:", error);
-        });
-    }
-  }, [user, isAuthChecked, dispatch]);
-
-  // Show loading spinner while checking authentication
-  if (isLoading || (!user && !isAuthChecked)) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        Loading...
       </div>
     );
   }
 
-  // If user exists in Redux state, they are authenticated
-  return user ? children : <Navigate to="/" replace={true} />;
+  // Not logged in
+  if (!user) {
+    return <Navigate to="/" replace />;
+  }
+
+  // Role restriction
+  if (allowedRoles && !allowedRoles.includes(user.role)) {
+    return <Navigate to="/admin" replace />;
+  }
+
+  return children;
 };

@@ -14,6 +14,7 @@ import Transactions from "./views/transactions/Transactions";
 import Settings from "./views/settings/Settings";
 import SessionManagement from "./views/session/SessionManagement";
 import Trainer from "./views/users/trainer/Trainer";
+import AdminIndexRedirect from "./views/routes/AdminIndexRedirect";
 
 const router = createBrowserRouter([
   {
@@ -27,13 +28,20 @@ const router = createBrowserRouter([
   {
     path: "/admin",
     element: (
-      // <PrivateRoutes>
-      <MainLayout />
-      // </PrivateRoutes>
+      <PrivateRoutes allowedRoles={["admin", "staff"]}>
+        <MainLayout />
+      </PrivateRoutes>
     ),
     children: [
-      { index: true, element: <Dashboard /> },
-      { path: "members", element: <Members /> },
+      { index: true, element: <AdminIndexRedirect /> },
+      {
+        path: "members",
+        element: (
+          <PrivateRoutes allowedRoles={["staff"]}>
+            <Members />
+          </PrivateRoutes>
+        ),
+      },
       { path: "staffs", element: <Staff /> },
       { path: "trainers", element: <Trainer /> },
       { path: "transactions", element: <Transactions /> },
