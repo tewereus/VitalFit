@@ -11,6 +11,7 @@ import { PrivateRoutes } from "./views/routes/PrivateRoutes";
 import { OpenRoutes } from "./views/routes/OpenRoutes";
 import Manager from "./views/users/staff/Manager";
 import Transactions from "./views/transactions/Transactions";
+import Settings from "./views/settings/Settings";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
       { path: "members", element: <Users /> },
       { path: "staff", element: <Manager /> },
       { path: "transactions", element: <Transactions /> },
+      { path: "settings", element: <Settings /> },
     ],
   },
 ]);
