@@ -9,6 +9,7 @@ import Dashboard from "./views/Dashboard";
 import Users from "./views/users/users/Users";
 import { PrivateRoutes } from "./views/routes/PrivateRoutes";
 import { OpenRoutes } from "./views/routes/OpenRoutes";
+import Manager from "./views/users/staff/Manager";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Dashboard /> },
       { path: "members", element: <Users /> },
+      { path: "staff", element: <Manager /> },
     ],
   },
 ]);
