@@ -12,7 +12,7 @@ const AdminIndexRedirect = () => {
   }
 
   // default admin
-  return <Navigate to="dashboard" replace />;
+  return <Dashboard />;
 };
 
 export default AdminIndexRedirect;

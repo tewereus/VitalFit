@@ -6,7 +6,7 @@ import ThemeInitializer from "./components/ThemeInitializer";
 import Login from "./views/auth/Login";
 import MainLayout from "./views/MainLayout";
 import Dashboard from "./views/Dashboard";
-import Members from "./views/users/users/Members";
+import Members from "./views/users/member/Members";
 import { PrivateRoutes } from "./views/routes/PrivateRoutes";
 import { OpenRoutes } from "./views/routes/OpenRoutes";
 import Staff from "./views/users/staff/Staff";
@@ -28,7 +28,7 @@ const router = createBrowserRouter([
   {
     path: "/admin",
     element: (
-      <PrivateRoutes allowedRoles={["admin", "staff"]}>
+      <PrivateRoutes allowedRoles={["administrator", "staff"]}>
         <MainLayout />
       </PrivateRoutes>
     ),

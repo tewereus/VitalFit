@@ -10,6 +10,7 @@ import MemberDashboard from "./MemberDashboard";
 import MemberTabs from "./MemberTabs";
 import Pagination from "../../../components/shared/Pagination";
 import { customModalStyles } from "../../../components/shared/modalStyles";
+import AddMember from "./AddMember";
 
 // const Users = () => {
 //   const dispatch = useDispatch();
@@ -176,6 +177,7 @@ const Members = () => {
   // Use mock data only
   const [users, setUsers] = useState(mockUsers);
   const [isView, setIsView] = useState(false);
+  const [isAdd, setIsAdd] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [isBlock, setIsBlock] = useState(false);
@@ -237,6 +239,20 @@ const Members = () => {
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-semibold text-gray-800 dark:text-white">
+          Members
+        </h1>
+        <div className="flex gap-3">
+          <button
+            onClick={() => setIsAdd(true)}
+            className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700
+                     focus:ring-4 focus:ring-teal-500/50 transition-colors"
+          >
+            Add Member
+          </button>
+        </div>
+      </div>
       {/* User Dashboard */}
       {userStats && <MemberDashboard stats={userStats} />}
 
@@ -337,6 +353,17 @@ const Members = () => {
           />
         </div>
       </div>
+
+      <Modal
+        isOpen={isAdd}
+        onRequestClose={() => setIsAdd(false)}
+        style={customModalStyles}
+        contentLabel="Add Member"
+        shouldCloseOnOverlayClick={true}
+        shouldCloseOnEsc={true}
+      >
+        <AddMember setIsOpen={setIsAdd} />
+      </Modal>
 
       <Modal
         isOpen={isView}
