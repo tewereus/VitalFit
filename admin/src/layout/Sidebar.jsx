@@ -104,7 +104,8 @@ const Sidebar = ({ onClose, isMobile }) => {
           isOpen={isUsersOpen}
         >
           <SubMenuItem to="members" text="Members" />
-          <SubMenuItem to="staff" text="Staff" />
+          <SubMenuItem to="staffs" text="Staffs" />
+          <SubMenuItem to="trainers" text="Trainers" />
         </MenuItem>
 
         <MenuItem

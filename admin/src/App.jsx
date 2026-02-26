@@ -13,6 +13,7 @@ import Manager from "./views/users/staff/Manager";
 import Transactions from "./views/transactions/Transactions";
 import Settings from "./views/settings/Settings";
 import SessionManagement from "./views/session/SessionManagement";
+import Trainer from "./views/users/trainer/Trainer";
 
 const router = createBrowserRouter([
   {
@@ -33,7 +34,8 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Dashboard /> },
       { path: "members", element: <Users /> },
-      { path: "staff", element: <Manager /> },
+      { path: "staffs", element: <Manager /> },
+      { path: "trainers", element: <Trainer /> },
       { path: "transactions", element: <Transactions /> },
       { path: "settings", element: <Settings /> },
       { path: "sessions", element: <SessionManagement /> },
