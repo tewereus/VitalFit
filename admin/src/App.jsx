@@ -12,6 +12,7 @@ import { OpenRoutes } from "./views/routes/OpenRoutes";
 import Manager from "./views/users/staff/Manager";
 import Transactions from "./views/transactions/Transactions";
 import Settings from "./views/settings/Settings";
+import SessionManagement from "./views/session/SessionManagement";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,7 @@ const router = createBrowserRouter([
       { path: "staff", element: <Manager /> },
       { path: "transactions", element: <Transactions /> },
       { path: "settings", element: <Settings /> },
+      { path: "sessions", element: <SessionManagement /> },
     ],
   },
 ]);
