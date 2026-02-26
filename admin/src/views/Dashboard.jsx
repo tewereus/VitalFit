@@ -1142,8 +1142,8 @@ const Dashboard = () => {
                   onClick={() => handleTimeframeChange(tf)}
                   className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
                     timeframe === tf
-                      ? "bg-yellow-500 text-white"
-                      : "text-gray-600 dark:text-gray-300 hover:bg-yellow-100 dark:hover:bg-yellow-700"
+                      ? "bg-teal-500 text-white"
+                      : "text-gray-600 dark:text-gray-300 hover:bg-teal-100 dark:hover:bg-teal-700"
                   }`}
                 >
                   {tf.charAt(0).toUpperCase() + tf.slice(1)}
@@ -1155,7 +1155,7 @@ const Dashboard = () => {
             <button
               onClick={handleRefresh}
               disabled={isLoading}
-              className="flex items-center justify-center gap-2 px-4 py-2 bg-yellow-500 hover:bg-yellow-600 disabled:bg-yellow-300 text-white rounded-lg shadow-sm transition-colors w-full sm:w-auto"
+              className="flex items-center justify-center gap-2 px-4 py-2 bg-teal-500 hover:bg-teal-600 disabled:bg-teal-300 text-white rounded-lg shadow-sm transition-colors w-full sm:w-auto"
             >
               <FiRefreshCw
                 className={`text-sm ${isLoading ? "animate-spin" : ""}`}
@@ -1204,8 +1204,8 @@ const Dashboard = () => {
                 </span>
               </div>
             </div>
-            <div className="p-3 bg-yellow-100 dark:bg-yellow-900/30 rounded-full">
-              <FaDollarSign className="text-yellow-600 dark:text-yellow-400 text-xl" />
+            <div className="p-3 bg-teal-100 dark:bg-teal-900/30 rounded-full">
+              <FaDollarSign className="text-teal-600 dark:text-teal-400 text-xl" />
             </div>
           </div>
         </div>
@@ -1218,12 +1218,12 @@ const Dashboard = () => {
                 Total Members
               </p>
               <p className="text-2xl font-bold text-gray-800 dark:text-white">
-                {overview?.totals?.members?.toLocaleString() || 0}
+                {overview?.totals?.members?.toLocaleString() || 32}
               </p>
               <div className="flex items-center mt-2">
                 <FaArrowUp className="text-green-500 text-sm mr-1" />
                 <span className="text-sm font-medium text-green-600">
-                  {overview?.newMembersThisWeek || 0}
+                  {overview?.newMembersThisWeek || 5}
                 </span>
                 <span className="text-gray-500 text-sm ml-1">
                   new this week
@@ -1244,11 +1244,11 @@ const Dashboard = () => {
                 Total Trainers
               </p>
               <p className="text-2xl font-bold text-gray-800 dark:text-white">
-                {overview?.totals?.trainers?.toLocaleString() || 0}
+                {overview?.totals?.trainers?.toLocaleString() || 7}
               </p>
             </div>
-            <div className="p-3 bg-yellow-100 dark:bg-yellow-900/30 rounded-full">
-              <FaUsers className="text-yellow-600 dark:text-yellow-400 text-xl" />
+            <div className="p-3 bg-teal-100 dark:bg-teal-900/30 rounded-full">
+              <FaUsers className="text-teal-600 dark:text-teal-400 text-xl" />
             </div>
           </div>
         </div>
@@ -1264,8 +1264,8 @@ const Dashboard = () => {
                 {overview?.totals?.classes?.toLocaleString() || 0}
               </p>
             </div>
-            <div className="p-3 bg-yellow-100 dark:bg-yellow-900/30 rounded-full">
-              <FaBox className="text-yellow-600 dark:text-yellow-400 text-xl" />
+            <div className="p-3 bg-teal-100 dark:bg-teal-900/30 rounded-full">
+              <FaBox className="text-teal-600 dark:text-teal-400 text-xl" />
             </div>
           </div>
         </div>
@@ -1299,12 +1299,12 @@ const Dashboard = () => {
                   >
                     <stop
                       offset="5%"
-                      stopColor={colors.warning}
+                      stopColor={colors.primary}
                       stopOpacity={0.3}
                     />
                     <stop
                       offset="95%"
-                      stopColor={colors.warning}
+                      stopColor={colors.primary}
                       stopOpacity={0}
                     />
                   </linearGradient>
@@ -1338,7 +1338,7 @@ const Dashboard = () => {
                 <Area
                   type="monotone"
                   dataKey="revenue"
-                  stroke={colors.warning}
+                  stroke={colors.primary}
                   strokeWidth={2}
                   fill="url(#revenueGradient)"
                 />

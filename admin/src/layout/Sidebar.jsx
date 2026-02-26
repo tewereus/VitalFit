@@ -42,14 +42,14 @@ const Sidebar = ({ onClose, isMobile }) => {
           onClick={handleClick}
           className={`w-full flex items-center px-4 py-2.5 rounded-lg transition-colors ${
             isMenuActive && !children
-              ? "bg-yellow-50 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400"
-              : "text-gray-600 dark:text-gray-300 hover:bg-yellow-50/50 dark:hover:bg-yellow-900/20"
+              ? "bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400"
+              : "text-gray-600 dark:text-gray-300 hover:bg-teal-50/50 dark:hover:bg-teal-900/20"
           }`}
         >
           <Icon
             className={`w-5 h-5 mr-3 ${
               isMenuActive && !children
-                ? "text-yellow-500 dark:text-yellow-400"
+                ? "text-teal-500 dark:text-teal-400"
                 : ""
             }`}
           />
@@ -78,7 +78,7 @@ const Sidebar = ({ onClose, isMobile }) => {
       onClick={() => isMobile && onClose()}
       className={`block px-4 py-2 rounded-lg transition-colors ${
         isActive(to)
-          ? "bg-yellow-50 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400"
+          ? "bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400"
           : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
       }`}
     >
