@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getUserFullDetails,
-  getOrderDetailsForAffiliate,
-} from "../../../store/users/userSlice";
-import {
   FiX,
   FiUser,
   FiShoppingBag,
@@ -21,15 +17,38 @@ import {
   FiChevronUp,
   FiExternalLink,
 } from "react-icons/fi";
-import ImageModal from "../../../components/shared/ImageModal";
-import TransactionDetailModal from "../../transactions/TransactionDetailModal";
-import AffiliateEarningsHistory from "../../affiliate/AffiliateEarningsHistory";
 
 const ViewUser = ({ setIsView, selectedUser, hideAffiliateAssets = false }) => {
+  // Use mock data only
+  const mockUsers = [
+    { id: 1, mockUsersname: "john", status: "active", joined: "2026-02-01" },
+    { id: 2, mockUsersname: "jane", status: "active", joined: "2026-02-10" },
+    {
+      id: 3,
+      mockUsersname: "blockedmockUsers",
+      status: "blocked",
+      joined: "2026-01-15",
+    },
+    {
+      id: 4,
+      mockUsersname: "goldmember",
+      status: "active",
+      joined: "2026-02-20",
+    },
+    {
+      id: 5,
+      mockUsersname: "trialmockUsers",
+      status: "active",
+      joined: "2026-02-25",
+    },
+  ];
+  // const mockUsers =
+  //   mockUsers.find((u) => u.mockUsersname === selectedUser?.mockUsersname) ||
+  //   mockUsers[0];
   const dispatch = useDispatch();
-  const { selectedUserFullDetails, isLoading, userImages } = useSelector(
-    (state) => state.users,
-  );
+  // const { selectedUserFullDetails, isLoading, mockUsersImages } = useSelector(
+  //   (state) => state.mockUserss,
+  // );
   const [activeTab, setActiveTab] = useState("overview");
 
   // State for Orders tab
@@ -99,55 +118,40 @@ const ViewUser = ({ setIsView, selectedUser, hideAffiliateAssets = false }) => {
       fetchOrderDetails(orderId);
     }
   };
+  // Mock details
+  const affiliateProducts = [];
+  const affiliateEarnings = 0;
+  const orders = [];
+  const images = [];
+  const transactions = [];
+  const auditLogs = [];
+  const sessions = [];
+  const couponsUsed = [];
+  // const {
+  //   mockUsers,
+  //   affiliateProducts,
+  //   affiliateEarnings,
+  //   orders,
+  //   images,
+  //   transactions,
+  //   auditLogs,
+  //   sessions,
+  //   couponsUsed,
+  // } = selectedUserFullDetails;
 
-  if (isLoading || !selectedUserFullDetails) {
-    return (
-      <div className="flex justify-center items-center p-12 bg-white dark:bg-gray-800 rounded-lg h-96">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-500"></div>
-      </div>
-    );
-  }
-
-  const {
-    user,
-    affiliateProducts,
-    affiliateEarnings,
-    orders,
-    images,
-    transactions,
-    auditLogs,
-    sessions,
-    couponsUsed,
-  } = selectedUserFullDetails;
-
-  const userCouponUsages = couponsUsed
+  const mockUsersCouponUsages = couponsUsed
     ? couponsUsed
         .flatMap((coupon) =>
           coupon.usageHistory
-            .filter((usage) => String(usage.user) === String(user._id))
+            .filter(
+              (usage) => String(usage.mockUsers) === String(mockUsers._id),
+            )
             .map((usage) => ({ ...usage, coupon })),
         )
         .sort((a, b) => new Date(b.usedAt) - new Date(a.usedAt))
     : [];
 
-  const tabs = [
-    { id: "overview", label: "Overview", icon: FiUser },
-    {
-      id: "orders",
-      label: "Orders",
-      icon: FiShoppingBag,
-      count: orders?.length,
-    },
-    { id: "affiliate", label: "Affiliate", icon: FiDollarSign },
-    { id: "assets", label: "Assets", icon: FiImage, count: images?.length },
-    {
-      id: "transactions",
-      label: "Transactions",
-      icon: FiActivity,
-      count: transactions?.length,
-    },
-    { id: "security", label: "Security", icon: FiShield },
-  ].filter(
+  const tabs = [{ id: "overview", label: "Overview", icon: FiUser }].filter(
     (tab) =>
       !hideAffiliateAssets || (tab.id !== "affiliate" && tab.id !== "assets"),
   );
@@ -155,32 +159,26 @@ const ViewUser = ({ setIsView, selectedUser, hideAffiliateAssets = false }) => {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden flex flex-col h-full w-full mx-auto">
       {/* Header */}
-      <ImageModal image={selectedImage} onClose={closeImageModal} />
-      {selectedTransaction && (
-        <TransactionDetailModal
-          transaction={selectedTransaction}
-          isOpen={isTransactionDetailModalOpen}
-          onClose={handleCloseTransactionModal}
-        />
-      )}
 
       <div className="flex justify-between items-center p-6 border-b dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
         <div className="flex items-center gap-4">
           <img
-            src={user?.profile || "https://avatar.iran.liara.run/public/boy"}
-            alt={user?.username}
+            src={
+              mockUsers?.profile || "https://avatar.iran.liara.run/public/boy"
+            }
+            alt={mockUsers?.mockUsersname}
             className="w-16 h-16 rounded-full object-cover border-2 border-teal-500"
           />
           <div>
             <h2 className="text-2xl font-bold dark:text-white">
-              {user?.fullname}
+              {mockUsers?.fullname}
             </h2>
             <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
               <span className="bg-teal-100 text-teal-800 px-2 py-0.5 rounded-full text-xs font-medium uppercase">
-                {user?.role}
+                {mockUsers?.role}
               </span>
               <span>•</span>
-              <span>{user?.email}</span>
+              <span>{mockUsers?.email}</span>
             </div>
           </div>
         </div>
@@ -227,16 +225,20 @@ const ViewUser = ({ setIsView, selectedUser, hideAffiliateAssets = false }) => {
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
                     <FiMail className="text-teal-500" />
-                    <span className="dark:text-gray-200">{user?.email}</span>
+                    <span className="dark:text-gray-200">
+                      {mockUsers?.email}
+                    </span>
                   </div>
                   <div className="flex items-center gap-3">
                     <FiPhone className="text-teal-500" />
-                    <span className="dark:text-gray-200">{user?.mobile}</span>
+                    <span className="dark:text-gray-200">
+                      {mockUsers?.mobile}
+                    </span>
                   </div>
                   <div className="flex items-center gap-3">
                     <FiMapPin className="text-teal-500" />
                     <span className="dark:text-gray-200">
-                      {user?.address || "No address provided"}
+                      {mockUsers?.address || "No address provided"}
                     </span>
                   </div>
                 </div>
@@ -253,12 +255,12 @@ const ViewUser = ({ setIsView, selectedUser, hideAffiliateAssets = false }) => {
                     </span>
                     <span
                       className={`px-2 py-0.5 rounded text-xs font-medium ${
-                        user?.isBlocked
+                        mockUsers?.isBlocked
                           ? "bg-red-100 text-red-800"
                           : "bg-green-100 text-green-800"
                       }`}
                     >
-                      {user?.isBlocked ? "Blocked" : "Active"}
+                      {mockUsers?.isBlocked ? "Blocked" : "Active"}
                     </span>
                   </div>
                   <div className="flex justify-between">
@@ -266,7 +268,7 @@ const ViewUser = ({ setIsView, selectedUser, hideAffiliateAssets = false }) => {
                       Joined
                     </span>
                     <span className="dark:text-gray-200">
-                      {new Date(user?.createdAt).toLocaleDateString()}
+                      {new Date(mockUsers?.createdAt).toLocaleDateString()}
                     </span>
                   </div>
                   <div className="flex justify-between">
@@ -274,7 +276,7 @@ const ViewUser = ({ setIsView, selectedUser, hideAffiliateAssets = false }) => {
                       Last Login
                     </span>
                     <span className="dark:text-gray-200">
-                      {formatDate(user?.lastLoginAt)}
+                      {formatDate(mockUsers?.lastLoginAt)}
                     </span>
                   </div>
                 </div>
@@ -314,7 +316,7 @@ const ViewUser = ({ setIsView, selectedUser, hideAffiliateAssets = false }) => {
             </div>
 
             {/* Coupons Used Section */}
-            {userCouponUsages && userCouponUsages.length > 0 && (
+            {mockUsersCouponUsages && mockUsersCouponUsages.length > 0 && (
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
                 <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-700">
                   <h3 className="font-semibold text-gray-800 dark:text-white flex items-center gap-2">
@@ -340,7 +342,7 @@ const ViewUser = ({ setIsView, selectedUser, hideAffiliateAssets = false }) => {
                       </tr>
                     </thead>
                     <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                      {userCouponUsages.map((usage) => (
+                      {mockUsersCouponUsages.map((usage) => (
                         <tr key={usage._id}>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="text-sm font-bold text-gray-900 dark:text-white">
@@ -519,15 +521,16 @@ const ViewUser = ({ setIsView, selectedUser, hideAffiliateAssets = false }) => {
                                   </h4>
                                   {orderDetails[order._id].products?.map(
                                     (p, pIndex) => {
-                                      const userImagesCount =
+                                      const mockUsersImagesCount =
                                         p.affiliate?.images?.filter(
-                                          (img) => img.uploader === user._id,
+                                          (img) =>
+                                            img.uploader === mockUsers._id,
                                         ).length || 0;
                                       const isAffiliater =
                                         p.affiliate?.product?.affiliater ===
-                                          user._id ||
+                                          mockUsers._id ||
                                         p.affiliate?.product?.affiliater
-                                          ?._id === user._id;
+                                          ?._id === mockUsers._id;
                                       return (
                                         <div
                                           key={pIndex}
@@ -545,20 +548,21 @@ const ViewUser = ({ setIsView, selectedUser, hideAffiliateAssets = false }) => {
                                             <p className="font-semibold text-sm">
                                               {p.product?.title}
                                             </p>
-                                            {(userImagesCount > 0 ||
+                                            {(mockUsersImagesCount > 0 ||
                                               isAffiliater) && (
                                               <div className="mt-2 bg-green-100 dark:bg-green-900/40 p-2 rounded border border-green-200 dark:border-green-800/50">
                                                 <p className="font-bold text-green-800 dark:text-green-300 text-[10px] uppercase mb-1">
                                                   Profit Source
                                                 </p>
-                                                {userImagesCount > 0 && (
+                                                {mockUsersImagesCount > 0 && (
                                                   <div className="mb-1">
                                                     <p className="flex items-center text-green-700 dark:text-green-200 gap-1.5 mb-1">
                                                       <FiImage size={12} />
                                                       <span>
-                                                        {userImagesCount} of
-                                                        your image
-                                                        {userImagesCount > 1
+                                                        {mockUsersImagesCount}{" "}
+                                                        of your image
+                                                        {mockUsersImagesCount >
+                                                        1
                                                           ? "s"
                                                           : ""}{" "}
                                                         used
@@ -569,11 +573,11 @@ const ViewUser = ({ setIsView, selectedUser, hideAffiliateAssets = false }) => {
                                                         ?.filter(
                                                           (img) =>
                                                             img.uploader ===
-                                                            user._id,
+                                                            mockUsers._id,
                                                         )
                                                         .map((img, idx) => {
                                                           const matchedImage =
-                                                            userImages?.find(
+                                                            mockUsersImages?.find(
                                                               (ui) =>
                                                                 ui._id ===
                                                                 img.imageId,
@@ -725,13 +729,6 @@ const ViewUser = ({ setIsView, selectedUser, hideAffiliateAssets = false }) => {
                     </div>
                   </div>
                 ))}
-            </div>
-
-            <div className="mt-6">
-              <h3 className="text-lg font-semibold dark:text-white mt-6 mb-2">
-                Earnings History
-              </h3>
-              <AffiliateEarningsHistory userId={user?._id} />
             </div>
           </div>
         )}

@@ -92,7 +92,7 @@ const UserTable = ({
                       {user.email}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                      {formatDate(user.createdAt)}
+                      {formatDate(user.joined)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span

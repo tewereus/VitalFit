@@ -1,18 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  blockUser,
-  unblockUser,
-  blockAffiliateUser,
-  unblockAffiliateUser,
-} from "../../../store/users/userSlice";
 import { FaUserLock, FaTimes, FaSpinner, FaUserSlash } from "react-icons/fa";
-import SecurityPasswordModal from "../../../components/SecurityPasswordModal";
-import useSecurityVerification from "../../../hooks/useSecurityVerification";
 
-const BlockUserModal = ({ isOpen, onClose, userToBlock, blockType = "user" }) => {
+const BlockUserModal = ({
+  isOpen,
+  onClose,
+  userToBlock,
+  blockType = "user",
+}) => {
   const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => state.users);
+  // Gold theme mock data
+  const mockUsers = [
+    { id: 1, username: "john", isBlocked: false, status: "active" },
+    { id: 2, username: "jane", isBlocked: false, status: "active" },
+    { id: 3, username: "blockeduser", isBlocked: true, status: "blocked" },
+    { id: 4, username: "goldmember", isBlocked: false, status: "active" },
+    { id: 5, username: "trialuser", isBlocked: false, status: "active" },
+  ];
+
+  const user =
+    mockUsers.find((u) => u.username === userToBlock?.username) || mockUsers[0];
+  // const isAffiliateBlock = blockType === "affiliate";
+  // const blockedUntil = null;
+  // const isCurrentlyBlocked = user.isBlocked;
+  // const blockReason = user.reason || "";
+  // const blockNote = "";
+  // const { isLoading } = useSelector((state) => state.users);
   const isAffiliateBlock = blockType === "affiliate";
   const blockedUntil = isAffiliateBlock
     ? userToBlock?.affiliateBlockedUntil
@@ -33,13 +46,6 @@ const BlockUserModal = ({ isOpen, onClose, userToBlock, blockType = "user" }) =>
     note: "",
   });
   const [errors, setErrors] = useState({});
-
-  const {
-    showSecurityModal,
-    executeWithSecurity,
-    handleSecuritySuccess,
-    handleSecurityClose,
-  } = useSecurityVerification("edit");
 
   useEffect(() => {
     if (userToBlock) {
@@ -96,7 +102,7 @@ const BlockUserModal = ({ isOpen, onClose, userToBlock, blockType = "user" }) =>
         note: formData.note,
       };
       console.log(blockData);
-      executeWithSecurity(async ({ securityPassword, headers } = {}) => {
+      dispatch(async ({ securityPassword, headers } = {}) => {
         try {
           if (isAffiliateBlock) {
             await dispatch(
@@ -271,7 +277,7 @@ const BlockUserModal = ({ isOpen, onClose, userToBlock, blockType = "user" }) =>
               <button
                 type="button"
                 onClick={handleUnblock}
-                disabled={isLoading}
+                // disabled={isLoading}
                 className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg flex items-center disabled:opacity-50"
               >
                 <FaUserSlash className="mr-2" />{" "}
@@ -280,35 +286,19 @@ const BlockUserModal = ({ isOpen, onClose, userToBlock, blockType = "user" }) =>
             )}
             <button
               type="submit"
-              disabled={isLoading}
+              // disabled={isLoading}
               className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg flex items-center disabled:opacity-50"
             >
-              {isLoading ? (
+              {/* {isLoading ? (
                 <FaSpinner className="animate-spin mr-2" />
-              ) : (
-                <FaUserLock className="mr-2" />
-              )}
-              {isCurrentlyBlocked === true
-                ? isAffiliateBlock
-                  ? "Update Affiliate Block"
-                  : "Update Block"
-                : isAffiliateBlock
-                  ? "Block Affiliate Access"
-                  : "Block User"}
+              ) : ( */}
+              <FaUserLock className="mr-2" />
+              {/* )} */}
+              {isCurrentlyBlocked === true ? "Update Block" : "Block User"}
             </button>
           </div>
         </form>
       </div>
-      <SecurityPasswordModal
-        isOpen={showSecurityModal}
-        onClose={handleSecurityClose}
-        onSuccess={handleSecuritySuccess}
-        action={
-          isAffiliateBlock
-            ? "block or unblock affiliate access"
-            : "block or unblock user"
-        }
-      />
     </div>
   );
 };

@@ -11,11 +11,48 @@ import {
   FaUserCheck,
   FaUserTimes,
 } from "react-icons/fa";
-import { useSelector } from "react-redux";
+
+// Gold theme mock data
+const mockUsers = [
+  {
+    id: 1,
+    username: "john",
+    isBlocked: false,
+    status: "active",
+    joined: "2026-02-01",
+  },
+  {
+    id: 2,
+    username: "jane",
+    isBlocked: false,
+    status: "active",
+    joined: "2026-02-10",
+  },
+  {
+    id: 3,
+    username: "blockeduser",
+    isBlocked: true,
+    status: "blocked",
+    joined: "2026-01-15",
+  },
+  {
+    id: 4,
+    username: "goldmember",
+    isBlocked: false,
+    status: "active",
+    joined: "2026-02-20",
+  },
+  {
+    id: 5,
+    username: "trialuser",
+    isBlocked: false,
+    status: "active",
+    joined: "2026-02-25",
+  },
+];
 
 const UserSummary = () => {
-  // Get user stats from Redux store (placeholder for now)
-  const { users } = useSelector((state) => state.users);
+  const users = mockUsers;
 
   // Format numbers with commas
   const formatNumber = (num) => {
@@ -45,13 +82,23 @@ const UserSummary = () => {
     }
   };
 
+  // const getStatusColorClass = (status) => {
+  //   switch (status) {
+  //     case "active":
+  //       return "text-teal-600 dark:text-teal-400";
+  //     case "blocked":
+  //       return "text-red-600 dark:text-red-400";
+  //     default:
+  //       return "text-gray-600 dark:text-gray-400";
+  //   }
+  // };
   // Get status color class
   const getStatusColorClass = (status) => {
     switch (status) {
       case "active":
-        return "text-teal-600 dark:text-teal-400";
+        return "text-yellow-600 dark:text-yellow-400";
       case "blocked":
-        return "text-red-600 dark:text-red-400";
+      // Gold theme mock data (mock data used everywhere)
       default:
         return "text-gray-600 dark:text-gray-400";
     }
@@ -62,6 +109,8 @@ const UserSummary = () => {
     if (!users || users.length === 0) {
       return {
         today: {
+          // // Use mock data only
+          // const users = mockUsers;
           total: 0,
           byStatus: {
             active: { count: 0, percentage: 0 },

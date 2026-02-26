@@ -3,14 +3,52 @@ import { FaUsers, FaUserCheck, FaUserTimes, FaChartBar } from "react-icons/fa";
 import UserTable from "./UserTable";
 import UserSummary from "./UserSummary";
 
-// Helper function to combine class names conditionally
+// Gold theme mock data
+const mockUsers = [
+  {
+    id: 1,
+    username: "john",
+    isBlocked: false,
+    status: "active",
+    joined: "2026-02-01",
+  },
+  {
+    id: 2,
+    username: "jane",
+    isBlocked: false,
+    status: "active",
+    joined: "2026-02-10",
+  },
+  {
+    id: 3,
+    username: "blockeduser",
+    isBlocked: true,
+    status: "blocked",
+    joined: "2026-01-15",
+  },
+  {
+    id: 4,
+    username: "goldmember",
+    isBlocked: false,
+    status: "active",
+    joined: "2026-02-20",
+  },
+  {
+    id: 5,
+    username: "trialuser",
+    isBlocked: false,
+    status: "active",
+    joined: "2026-02-25",
+  },
+];
+
 const cn = (...classes) => {
   return classes.filter(Boolean).join(" ");
 };
 
 const UserTabs = ({
-  users,
-  isLoading,
+  users = mockUsers,
+  isLoading = false,
   handleView,
   handleEdit,
   handleBlock,
@@ -46,7 +84,7 @@ const UserTabs = ({
       icon: <FaUserCheck className="w-4 h-4" />,
       badge: users?.filter((user) => !user.isBlocked)?.length || 0,
       badgeClass:
-        "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
+        "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400",
     },
     {
       id: "blocked",
@@ -75,8 +113,8 @@ const UserTabs = ({
               className={cn(
                 "inline-flex items-center px-4 py-2 text-sm font-medium border-b-2 rounded-t-lg",
                 activeTab === tab.id
-                  ? "text-teal-600 border-teal-600 dark:text-teal-400 dark:border-teal-400"
-                  : "text-gray-500 border-transparent hover:text-gray-600 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300",
+                  ? "text-yellow-600 border-yellow-500 dark:text-yellow-400 dark:border-yellow-400"
+                  : "text-gray-500 border-transparent hover:text-yellow-600 hover:border-yellow-300 dark:text-gray-400 dark:hover:text-yellow-300",
               )}
             >
               <span className="mr-2">{tab.icon}</span>

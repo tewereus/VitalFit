@@ -1,30 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import "../styles/enhanced-scrollbar.css";
 import {
   FaChartBar,
   FaUsers,
-  FaBoxes,
-  FaWarehouse,
-  FaMapMarkerAlt,
-  FaPalette,
-  FaImages,
   FaChevronDown,
-  FaSignOutAlt,
   FaChevronRight,
-  FaTicketAlt,
-  FaTextHeight,
   FaCog,
   FaMoneyBillWave,
-  FaChartLine,
-  FaShoppingCart,
-  FaKey,
   FaUserShield,
-  FaShieldAlt,
-  FaTachometerAlt,
-  FaHandshake,
-  FaBullhorn,
 } from "react-icons/fa";
 
 const Sidebar = ({ onClose, isMobile }) => {
@@ -35,25 +19,14 @@ const Sidebar = ({ onClose, isMobile }) => {
   const [isTransactionsOpen, setIsTransactionsOpen] = useState(false);
 
   const isActive = (path) => {
-    if (!path) {
-      return false;
-    }
     if (path === "dashboard") {
       return location.pathname === "/admin";
     }
     return location.pathname.includes(path);
   };
 
-  const MenuItem = ({
-    icon: Icon,
-    text,
-    onClick,
-    isOpen,
-    children,
-    badge,
-    activePath,
-  }) => {
-    const isMenuActive = isActive(activePath || text?.toLowerCase());
+  const MenuItem = ({ icon: Icon, text, onClick, isOpen, children, badge }) => {
+    const isMenuActive = isActive(text?.toLowerCase());
 
     const handleClick = () => {
       onClick();
@@ -67,22 +40,22 @@ const Sidebar = ({ onClose, isMobile }) => {
       <div className="mb-1">
         <button
           onClick={handleClick}
-          className={`w-full flex items-center px-3 py-2 rounded-lg transition-colors text-sm md:text-base ${
+          className={`w-full flex items-center px-4 py-2.5 rounded-lg transition-colors ${
             isMenuActive && !children
-              ? "bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400"
-              : "text-gray-600 dark:text-gray-300 hover:bg-teal-50/50 dark:hover:bg-teal-900/20"
+              ? "bg-yellow-50 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400"
+              : "text-gray-600 dark:text-gray-300 hover:bg-yellow-50/50 dark:hover:bg-yellow-900/20"
           }`}
         >
           <Icon
-            className={`w-5 h-5 mr-2 ${
+            className={`w-5 h-5 mr-3 ${
               isMenuActive && !children
-                ? "text-teal-500 dark:text-teal-400"
+                ? "text-yellow-500 dark:text-yellow-400"
                 : ""
             }`}
           />
           <span className="flex-1 text-left">{text}</span>
           {badge && (
-            <span className="ml-2 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+            <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full ml-2">
               {badge}
             </span>
           )}
@@ -99,14 +72,13 @@ const Sidebar = ({ onClose, isMobile }) => {
     );
   };
 
-  const SubMenuItem = ({ to, text, state }) => (
+  const SubMenuItem = ({ to, text }) => (
     <Link
       to={to}
-      state={state}
       onClick={() => isMobile && onClose()}
-      className={`block px-3 py-2 rounded-lg transition-colors text-sm md:text-base ${
+      className={`block px-4 py-2 rounded-lg transition-colors ${
         isActive(to)
-          ? "bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400"
+          ? "bg-yellow-50 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400"
           : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
       }`}
     >
@@ -116,7 +88,7 @@ const Sidebar = ({ onClose, isMobile }) => {
 
   return (
     <div className="h-full bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 overflow-y-auto shadow-md enhanced-scrollbar">
-      <div className="px-3 py-4 sm:p-4 space-y-2">
+      <div className="p-4 space-y-2">
         <MenuItem
           icon={FaChartBar}
           text="Dashboard"

@@ -3,11 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import Modal from "react-modal";
 import { FiTrash } from "react-icons/fi";
 import { FaUserCheck, FaUserTimes } from "react-icons/fa";
-import {
-  getAllUsers,
-  getUserStats,
-  getUserSummary,
-} from "../../../store/users/userSlice";
 import ViewUser from "./ViewUser";
 import EditUser from "./EditUser";
 import DeleteUser from "./DeleteUser";
@@ -17,8 +12,115 @@ import UserTabs from "./UserTabs";
 import Pagination from "../../../components/shared/Pagination";
 import { customModalStyles } from "../../../components/shared/modalStyles";
 
+// const Users = () => {
+//   const dispatch = useDispatch();
+//   const [isView, setIsView] = useState(false);
+//   const [isEdit, setIsEdit] = useState(false);
+//   const [isDelete, setIsDelete] = useState(false);
+//   const [isBlock, setIsBlock] = useState(false);
+//   const [modifyUser, setModifyUser] = useState(null);
+//   const [pageNumber, setPageNumber] = useState(1);
+//   const [parPage, setParPage] = useState(20);
+//   const [search, setSearch] = useState("");
+//   const [blocked, setBlocked] = useState("All");
+//   const [searchField, setSearchField] = useState("username");
+//   const [sort, setSort] = useState("-createdAt");
+//   const [sortValue, setSortValue] = useState({
+//     sortBy: "createdAt",
+//     order: "desc",
+//   });
+
+//   const { users, totalUsers, userStats, userSummary, recentUsers, isLoading } =
+//     useSelector((state) => state.users);
+//   const sortOptions = ["createdAt", "username", "fullname"];
+
+//   useEffect(() => {
+//     const obj = {
+//       limit: parseInt(parPage),
+//       page: parseInt(pageNumber),
+//       sort,
+//       search,
+//       searchField,
+//       blocked,
+//     };
+//     dispatch(getAllUsers(obj));
+//     dispatch(getUserStats());
+//     dispatch(getUserSummary());
+//   }, [dispatch, pageNumber, parPage, sort, search, searchField, blocked]);
+
+//   // Listen for block filter toggle event
+//   useEffect(() => {
+//     const handleToggleBlockFilter = () => {
+//       setBlocked((prev) => {
+//         if (prev === "All") return "false";
+//         if (prev === "false") return "true";
+//         return "All";
+//       });
+//     };
+
+//     window.addEventListener("toggleBlockFilter", handleToggleBlockFilter);
+
+//     return () => {
+//       window.removeEventListener("toggleBlockFilter", handleToggleBlockFilter);
+//     };
+//   }, []);
+
+const formatDate = (dateString) => {
+  const options = { year: "numeric", month: "short", day: "numeric" };
+  return new Date(dateString).toLocaleDateString(undefined, options);
+};
+
+const mockUsers = [
+  {
+    id: 1,
+    username: "john",
+    fullname: "John Doe",
+    email: "john@example.com",
+    isBlocked: false,
+    status: "active",
+    joined: "2026-02-01T00:00:00.000Z",
+  },
+  {
+    id: 2,
+    username: "jane",
+    fullname: "Jane Smith",
+    email: "jane@example.com",
+    isBlocked: false,
+    status: "active",
+    joined: "2026-02-10T00:00:00.000Z",
+  },
+  {
+    id: 3,
+    username: "blockeduser",
+    fullname: "Blocked User",
+    email: "blockeduser@example.com",
+    isBlocked: true,
+    status: "blocked",
+    joined: "2026-01-15T00:00:00.000Z",
+  },
+  {
+    id: 4,
+    username: "goldmember",
+    fullname: "Gold Member",
+    email: "goldmember@example.com",
+    isBlocked: false,
+    status: "active",
+    joined: "2026-02-20T00:00:00.000Z",
+  },
+  {
+    id: 5,
+    username: "trialuser",
+    fullname: "Trial User",
+    email: "trialuser@example.com",
+    isBlocked: false,
+    status: "active",
+    joined: "2026-02-25T00:00:00.000Z",
+  },
+];
+
 const Users = () => {
-  const dispatch = useDispatch();
+  // Use mock data only
+  const [users, setUsers] = useState(mockUsers);
   const [isView, setIsView] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
@@ -34,52 +136,29 @@ const Users = () => {
     sortBy: "createdAt",
     order: "desc",
   });
-
-  const { users, totalUsers, userStats, userSummary, recentUsers, isLoading } =
-    useSelector((state) => state.users);
+  const isLoading = false;
   const sortOptions = ["createdAt", "username", "fullname"];
 
-  useEffect(() => {
-    const obj = {
-      limit: parseInt(parPage),
-      page: parseInt(pageNumber),
-      sort,
-      search,
-      searchField,
-      blocked,
-    };
-    dispatch(getAllUsers(obj));
-    dispatch(getUserStats());
-    dispatch(getUserSummary());
-  }, [dispatch, pageNumber, parPage, sort, search, searchField, blocked]);
-
-  // Listen for block filter toggle event
-  useEffect(() => {
-    const handleToggleBlockFilter = () => {
-      setBlocked((prev) => {
-        if (prev === "All") return "false";
-        if (prev === "false") return "true";
-        return "All";
-      });
-    };
-
-    window.addEventListener("toggleBlockFilter", handleToggleBlockFilter);
-
-    return () => {
-      window.removeEventListener("toggleBlockFilter", handleToggleBlockFilter);
-    };
-  }, []);
-
+  // All handlers operate on mock data
   const handleSearchChange = (e) => {
-    if (e.key === "Enter") {
-      setSearch(e.target.value);
-      setPageNumber(1);
-    }
+    setSearch(e.target.value);
+    // Filter mock users
+    setUsers(
+      mockUsers.filter((user) =>
+        user.username.toLowerCase().includes(e.target.value.toLowerCase()),
+      ),
+    );
   };
 
   const handleSort = () => {
-    const { sortBy, order } = sortValue;
-    setSort(`${order === "desc" ? "-" : ""}${sortBy}`);
+    // Sort mock users
+    setUsers(
+      [...users].sort((a, b) =>
+        sortValue.order === "desc"
+          ? b[sortValue.sortBy].localeCompare(a[sortValue.sortBy])
+          : a[sortValue.sortBy].localeCompare(b[sortValue.sortBy]),
+      ),
+    );
   };
 
   const handleView = (user) => {
@@ -105,7 +184,7 @@ const Users = () => {
   return (
     <div className="p-6 max-w-7xl mx-auto">
       {/* User Dashboard */}
-      {userStats && <UserDashboard stats={userStats} />}
+      {/* {userStats && <UserDashboard stats={userStats} />} */}
 
       {/* Search and Filter */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-6">
@@ -180,7 +259,7 @@ const Users = () => {
       {/* Pagination */}
       <div className="mt-6 flex flex-col sm:flex-row justify-between items-center gap-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
         <Pagination
-          totalItems={totalUsers}
+          totalItems={users.length}
           parPage={parPage}
           pageNumber={pageNumber}
           setPageNumber={setPageNumber}

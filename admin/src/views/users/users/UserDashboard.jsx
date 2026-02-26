@@ -7,12 +7,22 @@ import {
   FaChartLine,
 } from "react-icons/fa";
 
-const UserDashboard = ({ stats }) => {
-  // Format numbers with commas
+
+
+// Gold theme mock data
+const mockStats = {
+  total: { count: 1200 },
+  active: { count: 950, percentage: 79 },
+  blocked: { count: 50, percentage: 4 },
+  newUsers: { count: 90, trend: 12 },
+};
+
+const UserDashboard = () => {
+  // Use mockStats only
+  const stats = mockStats;
   const formatNumber = (num) => {
     return num?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") || "0";
   };
-
   return (
     <div className="mb-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -36,7 +46,7 @@ const UserDashboard = ({ stats }) => {
         {/* Active Users */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
           <div className="flex items-center">
-            <div className="p-3 rounded-full bg-teal-100 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400 mr-4">
+            <div className="p-3 rounded-full bg-yellow-200 dark:bg-yellow-800/30 text-yellow-700 dark:text-yellow-300 mr-4">
               <FaUserCheck className="w-6 h-6" />
             </div>
             <div>
@@ -76,7 +86,7 @@ const UserDashboard = ({ stats }) => {
         {/* New Users (This Month) */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
           <div className="flex items-center">
-            <div className="p-3 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 mr-4">
+            <div className="p-3 rounded-full bg-yellow-300 dark:bg-yellow-700/30 text-yellow-800 dark:text-yellow-200 mr-4">
               <FaUserClock className="w-6 h-6" />
             </div>
             <div>

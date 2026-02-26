@@ -6,6 +6,7 @@ import ThemeInitializer from "./components/ThemeInitializer";
 import Login from "./views/auth/Login";
 import MainLayout from "./views/MainLayout";
 import Dashboard from "./views/Dashboard";
+import Users from "./views/users/users/Users";
 import { PrivateRoutes } from "./views/routes/PrivateRoutes";
 import { OpenRoutes } from "./views/routes/OpenRoutes";
 
@@ -25,7 +26,10 @@ const router = createBrowserRouter([
       <MainLayout />
       // </PrivateRoutes>
     ),
-    children: [{ index: true, element: <Dashboard /> }],
+    children: [
+      { index: true, element: <Dashboard /> },
+      { path: "members", element: <Users /> },
+    ],
   },
 ]);
 

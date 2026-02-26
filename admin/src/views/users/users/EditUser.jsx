@@ -1,26 +1,68 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { FiX } from "react-icons/fi";
-import { updateUser } from "../../../store/users/userSlice";
-import SecurityPasswordModal from "../../../components/SecurityPasswordModal";
-import useSecurityVerification from "../../../hooks/useSecurityVerification";
+import { FiX, FiAlertTriangle } from "react-icons/fi";
+
+// Gold theme mock data
+const mockUsers = [
+  {
+    id: 1,
+    username: "john",
+    email: "john@email.com",
+    mobile: "1234567890",
+    status: "active",
+    reason: "",
+    balance: 100,
+  },
+  {
+    id: 2,
+    username: "jane",
+    email: "jane@email.com",
+    mobile: "2345678901",
+    status: "active",
+    reason: "",
+    balance: 200,
+  },
+  {
+    id: 3,
+    username: "blockeduser",
+    email: "blocked@email.com",
+    mobile: "3456789012",
+    status: "blocked",
+    reason: "Violation",
+    balance: 0,
+  },
+  {
+    id: 4,
+    username: "goldmember",
+    email: "gold@email.com",
+    mobile: "4567890123",
+    status: "active",
+    reason: "",
+    balance: 500,
+  },
+  {
+    id: 5,
+    username: "trialuser",
+    email: "trial@email.com",
+    mobile: "5678901234",
+    status: "active",
+    reason: "",
+    balance: 50,
+  },
+];
 
 const EditUser = ({ setIsEdit, selectedUser }) => {
-  const dispatch = useDispatch();
+  // Use mock data for editing
+  const user =
+    mockUsers.find((u) => u.username === selectedUser?.username) ||
+    mockUsers[0];
   const [formData, setFormData] = useState({
-    username: selectedUser.username,
-    email: selectedUser.email,
-    mobile: selectedUser.mobile,
-    status: selectedUser.status,
-    reason: selectedUser.reason || "",
-    balance: selectedUser.balance,
+    username: user.username,
+    email: user.email,
+    mobile: user.mobile,
+    status: user.status,
+    reason: user.reason || "",
+    balance: user.balance,
   });
-  const {
-    showSecurityModal,
-    executeWithSecurity,
-    handleSecuritySuccess,
-    handleSecurityClose,
-  } = useSecurityVerification("edit");
 
   const handleChange = (e) => {
     setFormData({
@@ -31,21 +73,8 @@ const EditUser = ({ setIsEdit, selectedUser }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const dataToUpdate = { ...formData };
-    if (dataToUpdate.status !== "blocked") {
-      dataToUpdate.reason = "";
-    }
-    executeWithSecurity(async ({ securityPassword, headers }) => {
-      await dispatch(
-        updateUser({
-          id: selectedUser._id,
-          data: dataToUpdate,
-          securityPassword,
-          headers,
-        }),
-      );
-      setIsEdit(false);
-    });
+    // No backend call, just close modal
+    setIsEdit(false);
   };
 
   return (
@@ -76,8 +105,8 @@ const EditUser = ({ setIsEdit, selectedUser }) => {
                 value={formData.username}
                 onChange={handleChange}
                 className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg 
-                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-teal-500 
-                     dark:focus:ring-teal-600 focus:border-transparent transition-colors"
+                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-yellow-500 
+                     dark:focus:ring-yellow-600 focus:border-transparent transition-colors"
               />
             </div>
 
@@ -88,11 +117,11 @@ const EditUser = ({ setIsEdit, selectedUser }) => {
               <input
                 type="text"
                 name="fullname"
-                value={formData.fullname}
+                value={formData.fullname || ""}
                 onChange={handleChange}
                 className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg 
-                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-teal-500 
-                     dark:focus:ring-teal-600 focus:border-transparent transition-colors"
+                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-yellow-500 
+                     dark:focus:ring-yellow-600 focus:border-transparent transition-colors"
               />
             </div>
 
@@ -106,8 +135,8 @@ const EditUser = ({ setIsEdit, selectedUser }) => {
                 value={formData.email}
                 onChange={handleChange}
                 className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg 
-                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-teal-500 
-                     dark:focus:ring-teal-600 focus:border-transparent transition-colors"
+                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-yellow-500 
+                     dark:focus:ring-yellow-600 focus:border-transparent transition-colors"
               />
             </div>
 
@@ -121,8 +150,8 @@ const EditUser = ({ setIsEdit, selectedUser }) => {
                 value={formData.mobile}
                 onChange={handleChange}
                 className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg 
-                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-teal-500 
-                     dark:focus:ring-teal-600 focus:border-transparent transition-colors"
+                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-yellow-500 
+                     dark:focus:ring-yellow-600 focus:border-transparent transition-colors"
               />
             </div>
           </div>
@@ -139,20 +168,13 @@ const EditUser = ({ setIsEdit, selectedUser }) => {
           </button>
           <button
             type="submit"
-            className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 
-                   focus:ring-4 focus:ring-teal-500/50 transition-colors"
+            className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 
+                   focus:ring-4 focus:ring-yellow-500/50 transition-colors"
           >
             Update User
           </button>
         </div>
       </form>
-      <SecurityPasswordModal
-        isOpen={showSecurityModal}
-        onClose={handleSecurityClose}
-        onSuccess={handleSecuritySuccess}
-        action="edit user"
-        title="Security Verification - Edit User"
-      />
     </div>
   );
 };

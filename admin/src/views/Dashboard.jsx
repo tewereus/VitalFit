@@ -1142,8 +1142,8 @@ const Dashboard = () => {
                   onClick={() => handleTimeframeChange(tf)}
                   className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
                     timeframe === tf
-                      ? "bg-teal-600 text-white"
-                      : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      ? "bg-yellow-500 text-white"
+                      : "text-gray-600 dark:text-gray-300 hover:bg-yellow-100 dark:hover:bg-yellow-700"
                   }`}
                 >
                   {tf.charAt(0).toUpperCase() + tf.slice(1)}
@@ -1155,7 +1155,7 @@ const Dashboard = () => {
             <button
               onClick={handleRefresh}
               disabled={isLoading}
-              className="flex items-center justify-center gap-2 px-4 py-2 bg-teal-600 hover:bg-teal-700 disabled:bg-teal-400 text-white rounded-lg shadow-sm transition-colors w-full sm:w-auto"
+              className="flex items-center justify-center gap-2 px-4 py-2 bg-yellow-500 hover:bg-yellow-600 disabled:bg-yellow-300 text-white rounded-lg shadow-sm transition-colors w-full sm:w-auto"
             >
               <FiRefreshCw
                 className={`text-sm ${isLoading ? "animate-spin" : ""}`}
@@ -1204,93 +1204,68 @@ const Dashboard = () => {
                 </span>
               </div>
             </div>
-            <div className="p-3 bg-teal-100 dark:bg-teal-900/30 rounded-full">
-              <FaDollarSign className="text-teal-600 dark:text-teal-400 text-xl" />
+            <div className="p-3 bg-yellow-100 dark:bg-yellow-900/30 rounded-full">
+              <FaDollarSign className="text-yellow-600 dark:text-yellow-400 text-xl" />
             </div>
           </div>
         </div>
 
-        {/* Total Orders */}
+        {/* Total Members */}
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
-                Total Orders
+                Total Members
               </p>
               <p className="text-2xl font-bold text-gray-800 dark:text-white">
-                {overview?.thisMonth?.orders?.toLocaleString() || 0}
-              </p>
-              <div className="flex items-center mt-2">
-                {overview?.thisMonth?.orderGrowth >= 0 ? (
-                  <FiTrendingUp className="text-green-500 text-sm mr-1" />
-                ) : (
-                  <FiTrendingDown className="text-red-500 text-sm mr-1" />
-                )}
-                <span
-                  className={`text-sm font-medium ${
-                    overview?.thisMonth?.orderGrowth >= 0
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }`}
-                >
-                  {formatPercentage(overview?.thisMonth?.orderGrowth)}
-                </span>
-                <span className="text-gray-500 text-sm ml-1">
-                  vs last month
-                </span>
-              </div>
-            </div>
-            <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-full">
-              <FaShoppingCart className="text-blue-600 dark:text-blue-400 text-xl" />
-            </div>
-          </div>
-        </div>
-
-        {/* Total Users */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
-                Total Users
-              </p>
-              <p className="text-2xl font-bold text-gray-800 dark:text-white">
-                {overview?.totals?.users?.toLocaleString() || 0}
+                {overview?.totals?.members?.toLocaleString() || 0}
               </p>
               <div className="flex items-center mt-2">
                 <FaArrowUp className="text-green-500 text-sm mr-1" />
                 <span className="text-sm font-medium text-green-600">
-                  {overview?.newUsersThisWeek || 0}
+                  {overview?.newMembersThisWeek || 0}
                 </span>
                 <span className="text-gray-500 text-sm ml-1">
                   new this week
                 </span>
               </div>
             </div>
-            <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-full">
-              <FaUsers className="text-purple-600 dark:text-purple-400 text-xl" />
+            <div className="p-3 bg-yellow-100 dark:bg-yellow-900/30 rounded-full">
+              <FaUsers className="text-yellow-600 dark:text-yellow-400 text-xl" />
             </div>
           </div>
         </div>
 
-        {/* Total Products */}
+        {/* Total Trainers */}
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
-                Total Products
+                Total Trainers
               </p>
               <p className="text-2xl font-bold text-gray-800 dark:text-white">
-                {overview?.totals?.products?.toLocaleString() || 0}
+                {overview?.totals?.trainers?.toLocaleString() || 0}
               </p>
-              <div className="flex items-center mt-2">
-                <FaBox className="text-gray-500 text-sm mr-1" />
-                <span className="text-sm text-gray-500">
-                  {overview?.totals?.images || 0} images
-                </span>
-              </div>
             </div>
-            <div className="p-3 bg-orange-100 dark:bg-orange-900/30 rounded-full">
-              <FaBox className="text-orange-600 dark:text-orange-400 text-xl" />
+            <div className="p-3 bg-yellow-100 dark:bg-yellow-900/30 rounded-full">
+              <FaUsers className="text-yellow-600 dark:text-yellow-400 text-xl" />
+            </div>
+          </div>
+        </div>
+
+        {/* Total Classes */}
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+                Total Classes
+              </p>
+              <p className="text-2xl font-bold text-gray-800 dark:text-white">
+                {overview?.totals?.classes?.toLocaleString() || 0}
+              </p>
+            </div>
+            <div className="p-3 bg-yellow-100 dark:bg-yellow-900/30 rounded-full">
+              <FaBox className="text-yellow-600 dark:text-yellow-400 text-xl" />
             </div>
           </div>
         </div>
@@ -1324,12 +1299,12 @@ const Dashboard = () => {
                   >
                     <stop
                       offset="5%"
-                      stopColor={colors.primary}
+                      stopColor={colors.warning}
                       stopOpacity={0.3}
                     />
                     <stop
                       offset="95%"
-                      stopColor={colors.primary}
+                      stopColor={colors.warning}
                       stopOpacity={0}
                     />
                   </linearGradient>
@@ -1363,7 +1338,7 @@ const Dashboard = () => {
                 <Area
                   type="monotone"
                   dataKey="revenue"
-                  stroke={colors.primary}
+                  stroke={colors.warning}
                   strokeWidth={2}
                   fill="url(#revenueGradient)"
                 />

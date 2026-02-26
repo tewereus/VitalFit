@@ -1,13 +1,21 @@
-import React from "react";
-import { useDispatch } from "react-redux";
 import { FiX, FiAlertTriangle } from "react-icons/fi";
-import { deleteUser } from "../../../store/users/userSlice";
+// Gold theme mock data
+const mockUsers = [
+  { id: 1, username: "john" },
+  { id: 2, username: "jane" },
+  { id: 3, username: "blockeduser" },
+  { id: 4, username: "goldmember" },
+  { id: 5, username: "trialuser" },
+];
 
 const DeleteUser = ({ setIsDelete, selectedUser }) => {
-  const dispatch = useDispatch();
+  // Use mock data for deletion
+  const user =
+    mockUsers.find((u) => u.username === selectedUser?.username) ||
+    mockUsers[0];
 
   const handleDelete = () => {
-    dispatch(deleteUser(selectedUser._id));
+    // No backend call, just close modal
     setIsDelete(false);
   };
 
@@ -32,7 +40,7 @@ const DeleteUser = ({ setIsDelete, selectedUser }) => {
         </div>
 
         <h3 className="mb-2 text-lg font-medium text-center dark:text-white">
-          Delete {selectedUser.username}
+          Delete {user.username}
         </h3>
 
         <p className="text-center text-gray-600 dark:text-gray-400 mb-6">
