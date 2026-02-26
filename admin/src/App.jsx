@@ -10,6 +10,7 @@ import Users from "./views/users/users/Users";
 import { PrivateRoutes } from "./views/routes/PrivateRoutes";
 import { OpenRoutes } from "./views/routes/OpenRoutes";
 import Manager from "./views/users/staff/Manager";
+import Transactions from "./views/transactions/Transactions";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,7 @@ const router = createBrowserRouter([
       { index: true, element: <Dashboard /> },
       { path: "members", element: <Users /> },
       { path: "staff", element: <Manager /> },
+      { path: "transactions", element: <Transactions /> },
     ],
   },
 ]);

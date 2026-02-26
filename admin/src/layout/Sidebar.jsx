@@ -111,7 +111,7 @@ const Sidebar = ({ onClose, isMobile }) => {
           icon={FaMoneyBillWave}
           text="Transactions"
           onClick={() => {
-            navigate("/transactions");
+            navigate("transactions");
           }}
           isOpen={isTransactionsOpen}
         />
