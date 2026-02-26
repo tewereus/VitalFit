@@ -6,10 +6,10 @@ import ThemeInitializer from "./components/ThemeInitializer";
 import Login from "./views/auth/Login";
 import MainLayout from "./views/MainLayout";
 import Dashboard from "./views/Dashboard";
-import Users from "./views/users/users/Users";
+import Members from "./views/users/users/Members";
 import { PrivateRoutes } from "./views/routes/PrivateRoutes";
 import { OpenRoutes } from "./views/routes/OpenRoutes";
-import Manager from "./views/users/staff/Manager";
+import Staff from "./views/users/staff/Staff";
 import Transactions from "./views/transactions/Transactions";
 import Settings from "./views/settings/Settings";
 import SessionManagement from "./views/session/SessionManagement";
@@ -33,8 +33,8 @@ const router = createBrowserRouter([
     ),
     children: [
       { index: true, element: <Dashboard /> },
-      { path: "members", element: <Users /> },
-      { path: "staffs", element: <Manager /> },
+      { path: "members", element: <Members /> },
+      { path: "staffs", element: <Staff /> },
       { path: "trainers", element: <Trainer /> },
       { path: "transactions", element: <Transactions /> },
       { path: "settings", element: <Settings /> },

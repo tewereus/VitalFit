@@ -1,4 +1,4 @@
-// ViewManager.js
+// ViewStaff.js
 import React from "react";
 import {
   FiX,
@@ -10,7 +10,7 @@ import {
   FiGrid,
 } from "react-icons/fi";
 
-const ViewManager = ({ setIsView, selectedUser }) => {
+const ViewStaff = ({ setIsView, selectedUser }) => {
   const getStatusColor = (status) => {
     switch (status) {
       case "active":
@@ -30,7 +30,7 @@ const ViewManager = ({ setIsView, selectedUser }) => {
       <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-            Manager Details
+            Staff Details
           </h2>
           <button
             onClick={() => setIsView(false)}
@@ -229,4 +229,4 @@ const ViewManager = ({ setIsView, selectedUser }) => {
   );
 };
 
-export default ViewManager;
+export default ViewStaff;

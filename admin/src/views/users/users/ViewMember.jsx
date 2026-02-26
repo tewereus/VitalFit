@@ -18,7 +18,11 @@ import {
   FiExternalLink,
 } from "react-icons/fi";
 
-const ViewUser = ({ setIsView, selectedUser, hideAffiliateAssets = false }) => {
+const ViewMember = ({
+  setIsView,
+  selectedUser,
+  hideAffiliateAssets = false,
+}) => {
   // Use mock data only
   const mockUsers = [
     { id: 1, mockUsersname: "john", status: "active", joined: "2026-02-01" },
@@ -972,4 +976,4 @@ const ViewUser = ({ setIsView, selectedUser, hideAffiliateAssets = false }) => {
   );
 };
 
-export default ViewUser;
+export default ViewMember;

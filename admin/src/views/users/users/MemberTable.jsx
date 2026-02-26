@@ -1,7 +1,7 @@
 import React from "react";
 import { FiEye, FiEdit2, FiTrash2, FiUserX } from "react-icons/fi";
 
-const UserTable = ({
+const MemberTable = ({
   users,
   isLoading,
   handleView,
@@ -148,4 +148,4 @@ const UserTable = ({
   );
 };
 
-export default UserTable;
+export default MemberTable;

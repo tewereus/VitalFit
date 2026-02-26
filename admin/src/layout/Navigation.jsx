@@ -18,6 +18,7 @@ const Navigation = ({ onToggleSidebar, isSidebarOpen }) => {
   const isDarkMode = document.body.classList.contains("dark");
 
   const handleTheme = () => {
+    console.log(user);
     const currentMode =
       user?.preference?.mode || (isDarkMode ? "dark" : "light");
     const newMode = currentMode === "dark" ? "light" : "dark";

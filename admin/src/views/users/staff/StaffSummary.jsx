@@ -17,7 +17,7 @@ import {
 } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
-const ManagerSummary = () => {
+const StaffSummary = () => {
   // Get manager data from Redux store
   const managers = [
     {
@@ -303,19 +303,17 @@ const ManagerSummary = () => {
   };
 
   // Calculate basic stats from available manager data
-  const activeManagers =
+  const activeStaffs =
     managers?.filter((manager) => manager.status === "active")?.length || 0;
-  const inactiveManagers =
+  const inactiveStaffs =
     managers?.filter((manager) => manager.status === "inactive")?.length || 0;
-  const totalManagers = managers?.length || 0;
+  const totalStaffs = managers?.length || 0;
 
   // Calculate percentages
   const activePercentage =
-    totalManagers > 0 ? Math.round((activeManagers / totalManagers) * 100) : 0;
+    totalStaffs > 0 ? Math.round((activeStaffs / totalStaffs) * 100) : 0;
   const inactivePercentage =
-    totalManagers > 0
-      ? Math.round((inactiveManagers / totalManagers) * 100)
-      : 0;
+    totalStaffs > 0 ? Math.round((inactiveStaffs / totalStaffs) * 100) : 0;
 
   // Calculate main status stats
   const mainStatusCounts = {
@@ -342,10 +340,10 @@ const ManagerSummary = () => {
     (sum, manager) => sum + (manager.riders?.count || 0),
     0,
   );
-  const avgPrintersPerManager =
-    totalManagers > 0 ? (totalPrinters / totalManagers).toFixed(1) : 0;
-  const avgRidersPerManager =
-    totalManagers > 0 ? (totalRiders / totalManagers).toFixed(1) : 0;
+  const avgPrintersPerStaff =
+    totalStaffs > 0 ? (totalPrinters / totalStaffs).toFixed(1) : 0;
+  const avgRidersPerStaff =
+    totalStaffs > 0 ? (totalRiders / totalStaffs).toFixed(1) : 0;
 
   // Format status for display
   const formatStatus = (status) => {
@@ -440,33 +438,33 @@ const ManagerSummary = () => {
     const yearStart = new Date(now.getFullYear(), 0, 1);
 
     // Filter managers by time periods
-    const todayManagers = managers.filter(
+    const todayStaffs = managers.filter(
       (manager) => new Date(manager.createdAt) >= todayStart,
     );
-    const weekManagers = managers.filter(
+    const weekStaffs = managers.filter(
       (manager) => new Date(manager.createdAt) >= weekStart,
     );
-    const monthManagers = managers.filter(
+    const monthStaffs = managers.filter(
       (manager) => new Date(manager.createdAt) >= monthStart,
     );
-    const yearManagers = managers.filter(
+    const yearStaffs = managers.filter(
       (manager) => new Date(manager.createdAt) >= yearStart,
     );
 
     // Calculate stats for each time period
-    const calculateStats = (periodManagers) => {
-      const total = periodManagers.length;
+    const calculateStats = (periodStaffs) => {
+      const total = periodStaffs.length;
 
-      const activeCount = periodManagers.filter(
+      const activeCount = periodStaffs.filter(
         (m) => m.main_status === "active",
       ).length;
-      const inactiveCount = periodManagers.filter(
+      const inactiveCount = periodStaffs.filter(
         (m) => m.main_status === "inactive",
       ).length;
-      const waitingCount = periodManagers.filter(
+      const waitingCount = periodStaffs.filter(
         (m) => m.main_status === "waiting",
       ).length;
-      const unavailableCount = periodManagers.filter(
+      const unavailableCount = periodStaffs.filter(
         (m) => m.main_status === "unavailable",
       ).length;
 
@@ -494,10 +492,10 @@ const ManagerSummary = () => {
     };
 
     return {
-      today: calculateStats(todayManagers),
-      week: calculateStats(weekManagers),
-      month: calculateStats(monthManagers),
-      year: calculateStats(yearManagers),
+      today: calculateStats(todayStaffs),
+      week: calculateStats(weekStaffs),
+      month: calculateStats(monthStaffs),
+      year: calculateStats(yearStaffs),
     };
   };
 
@@ -520,7 +518,7 @@ const ManagerSummary = () => {
           <div className="space-y-2">
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-500 dark:text-gray-400">
-                New Managers:
+                New Staffs:
               </span>
               <span className="font-medium text-teal-600 dark:text-teal-400">
                 {formatNumber(summary.today.total)}
@@ -566,7 +564,7 @@ const ManagerSummary = () => {
           <div className="space-y-2">
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-500 dark:text-gray-400">
-                New Managers:
+                New Staffs:
               </span>
               <span className="font-medium text-blue-600 dark:text-blue-400">
                 {formatNumber(summary.week.total)}
@@ -608,7 +606,7 @@ const ManagerSummary = () => {
           <div className="space-y-2">
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-500 dark:text-gray-400">
-                New Managers:
+                New Staffs:
               </span>
               <span className="font-medium text-indigo-600 dark:text-indigo-400">
                 {formatNumber(summary.month.total)}
@@ -654,7 +652,7 @@ const ManagerSummary = () => {
           <div className="space-y-2">
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-500 dark:text-gray-400">
-                New Managers:
+                New Staffs:
               </span>
               <span className="font-medium text-orange-600 dark:text-orange-400">
                 {formatNumber(summary.year.total)}
@@ -684,11 +682,11 @@ const ManagerSummary = () => {
         </div>
       </div>
 
-      {/* Current Manager Stats */}
+      {/* Current Staff Stats */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-medium text-gray-800 dark:text-white">
-            Current Manager Statistics
+            Current Staff Statistics
           </h3>
           <div className="p-2 rounded-full bg-teal-100 dark:bg-blue-900/30 text-teal-600 dark:text-teal-400">
             <FaUsers className="w-5 h-5" />
@@ -696,7 +694,7 @@ const ManagerSummary = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Total Managers */}
+          {/* Total Staffs */}
           <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
             <div className="flex items-center">
               <div className="p-2 rounded-full bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 mr-3">
@@ -704,16 +702,16 @@ const ManagerSummary = () => {
               </div>
               <div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Total Managers
+                  Total Staffs
                 </p>
                 <p className="text-lg font-medium text-gray-800 dark:text-white">
-                  {formatNumber(totalManagers)}
+                  {formatNumber(totalStaffs)}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Active Managers */}
+          {/* Active Staffs */}
           <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
             <div className="flex items-center">
               <div className="p-2 rounded-full bg-teal-100 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400 mr-3">
@@ -721,16 +719,16 @@ const ManagerSummary = () => {
               </div>
               <div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Active Managers
+                  Active Staffs
                 </p>
                 <p className="text-lg font-medium text-teal-600 dark:text-teal-400">
-                  {formatNumber(activeManagers)} ({activePercentage}%)
+                  {formatNumber(activeStaffs)} ({activePercentage}%)
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Inactive Managers */}
+          {/* Inactive Staffs */}
           <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
             <div className="flex items-center">
               <div className="p-2 rounded-full bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 mr-3">
@@ -738,10 +736,10 @@ const ManagerSummary = () => {
               </div>
               <div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Inactive Managers
+                  Inactive Staffs
                 </p>
                 <p className="text-lg font-medium text-red-600 dark:text-red-400">
-                  {formatNumber(inactiveManagers)} ({inactivePercentage}%)
+                  {formatNumber(inactiveStaffs)} ({inactivePercentage}%)
                 </p>
               </div>
             </div>
@@ -773,10 +771,8 @@ const ManagerSummary = () => {
                 </p>
                 <p className="text-lg font-medium text-teal-600 dark:text-teal-400">
                   {formatNumber(mainStatusCounts.active)} (
-                  {totalManagers > 0
-                    ? Math.round(
-                        (mainStatusCounts.active / totalManagers) * 100,
-                      )
+                  {totalStaffs > 0
+                    ? Math.round((mainStatusCounts.active / totalStaffs) * 100)
                     : 0}
                   %)
                 </p>
@@ -796,9 +792,9 @@ const ManagerSummary = () => {
                 </p>
                 <p className="text-lg font-medium text-red-600 dark:text-red-400">
                   {formatNumber(mainStatusCounts.inactive)} (
-                  {totalManagers > 0
+                  {totalStaffs > 0
                     ? Math.round(
-                        (mainStatusCounts.inactive / totalManagers) * 100,
+                        (mainStatusCounts.inactive / totalStaffs) * 100,
                       )
                     : 0}
                   %)
@@ -819,10 +815,8 @@ const ManagerSummary = () => {
                 </p>
                 <p className="text-lg font-medium text-yellow-600 dark:text-yellow-400">
                   {formatNumber(mainStatusCounts.waiting)} (
-                  {totalManagers > 0
-                    ? Math.round(
-                        (mainStatusCounts.waiting / totalManagers) * 100,
-                      )
+                  {totalStaffs > 0
+                    ? Math.round((mainStatusCounts.waiting / totalStaffs) * 100)
                     : 0}
                   %)
                 </p>
@@ -842,9 +836,9 @@ const ManagerSummary = () => {
                 </p>
                 <p className="text-lg font-medium text-gray-600 dark:text-gray-400">
                   {formatNumber(mainStatusCounts.unavailable)} (
-                  {totalManagers > 0
+                  {totalStaffs > 0
                     ? Math.round(
-                        (mainStatusCounts.unavailable / totalManagers) * 100,
+                        (mainStatusCounts.unavailable / totalStaffs) * 100,
                       )
                     : 0}
                   %)
@@ -858,4 +852,4 @@ const ManagerSummary = () => {
   );
 };
 
-export default ManagerSummary;
+export default StaffSummary;

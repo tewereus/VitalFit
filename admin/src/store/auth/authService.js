@@ -2,6 +2,7 @@ import { axiosPrivate, axiosPublic } from "../../api/axios";
 
 const adminLogin = async (data) => {
   try {
+    console.log(data);
     const response = await axiosPublic.post(`/admin/login`, data, {
       withCredentials: true, // Important for cookies
     });
@@ -38,7 +39,7 @@ const refreshToken = async () => {
       {},
       {
         withCredentials: true,
-      }
+      },
     );
 
     // Then, get the current user profile to update the Redux state
@@ -93,6 +94,7 @@ const updatePassword = async (data) => {
 };
 
 const toggleDarkMode = async (data) => {
+  console.log(data);
   const response = await axiosPrivate.put(`/admin/dark-mode`, data);
   return response.data;
 };

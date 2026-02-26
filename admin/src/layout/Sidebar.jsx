@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import "../styles/enhanced-scrollbar.css";
 import {
   FaChartBar,
@@ -16,7 +17,7 @@ const Sidebar = ({ onClose, isMobile }) => {
   const location = useLocation();
   const [isUsersOpen, setIsUsersOpen] = useState(false);
   const [isSecurityOpen, setIsSecurityOpen] = useState(false);
-  const [isTransactionsOpen, setIsTransactionsOpen] = useState(false);
+  const { user } = useSelector((state) => state.auth);
 
   const isActive = (path) => {
     if (path === "dashboard") {
@@ -29,8 +30,7 @@ const Sidebar = ({ onClose, isMobile }) => {
     const isMenuActive = isActive(text?.toLowerCase());
 
     const handleClick = () => {
-      onClick();
-      // Close sidebar on mobile when navigating to a page (not dropdown)
+      if (onClick) onClick();
       if (isMobile && !children) {
         onClose();
       }
@@ -89,50 +89,54 @@ const Sidebar = ({ onClose, isMobile }) => {
   return (
     <div className="h-full bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 overflow-y-auto shadow-md enhanced-scrollbar">
       <div className="p-4 space-y-2">
-        <MenuItem
-          icon={FaChartBar}
-          text="Dashboard"
-          onClick={() => navigate("/admin")}
-        />
+        {user?.role === "administrator" && (
+          <>
+            <MenuItem
+              icon={FaChartBar}
+              text="Dashboard"
+              onClick={() => navigate("/admin")}
+            />
 
-        <MenuItem
-          icon={FaUsers}
-          text="Users"
-          onClick={() => {
-            setIsUsersOpen(!isUsersOpen);
-          }}
-          isOpen={isUsersOpen}
-        >
-          <SubMenuItem to="members" text="Members" />
-          <SubMenuItem to="staffs" text="Staffs" />
-          <SubMenuItem to="trainers" text="Trainers" />
-        </MenuItem>
+            <MenuItem
+              icon={FaUsers}
+              text="Users"
+              onClick={() => setIsUsersOpen(!isUsersOpen)}
+              isOpen={isUsersOpen}
+            >
+              <SubMenuItem to="members" text="Members" />
+              <SubMenuItem to="staffs" text="Staffs" />
+              <SubMenuItem to="trainers" text="Trainers" />
+            </MenuItem>
 
-        <MenuItem
-          icon={FaMoneyBillWave}
-          text="Transactions"
-          onClick={() => {
-            navigate("transactions");
-          }}
-          isOpen={isTransactionsOpen}
-        />
-        <MenuItem
-          icon={FaCog}
-          text="Settings"
-          onClick={() => navigate("settings")}
-        />
+            <MenuItem
+              icon={FaMoneyBillWave}
+              text="Transactions"
+              onClick={() => navigate("transactions")}
+            />
+            <MenuItem
+              icon={FaCog}
+              text="Settings"
+              onClick={() => navigate("settings")}
+            />
 
-        <MenuItem
-          icon={FaUserShield}
-          text="Security"
-          onClick={() => {
-            setIsSecurityOpen(!isSecurityOpen);
-            setIsUsersOpen(false);
-          }}
-          isOpen={isSecurityOpen}
-        >
-          <SubMenuItem to="sessions" text="Session Management" />
-        </MenuItem>
+            <MenuItem
+              icon={FaUserShield}
+              text="Security"
+              onClick={() => setIsSecurityOpen(!isSecurityOpen)}
+              isOpen={isSecurityOpen}
+            >
+              <SubMenuItem to="sessions" text="Session Management" />
+            </MenuItem>
+          </>
+        )}
+
+        {user?.role === "staff" && (
+          <MenuItem
+            icon={FaUsers}
+            text="Members"
+            onClick={() => navigate("members")}
+          />
+        )}
       </div>
     </div>
   );

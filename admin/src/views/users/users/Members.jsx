@@ -2,13 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "react-modal";
 import { FiTrash } from "react-icons/fi";
-import { FaUserCheck, FaUserTimes } from "react-icons/fa";
-import ViewUser from "./ViewUser";
-import EditUser from "./EditUser";
-import DeleteUser from "./DeleteUser";
-import BlockUserModal from "./BlockUserModal";
-import UserDashboard from "./UserDashboard";
-import UserTabs from "./UserTabs";
+import ViewMember from "./ViewMember";
+import EditMember from "./EditMember";
+import DeleteMember from "./DeleteMember";
+import BlockMemberModal from "./BlockMemberModal";
+import MemberDashboard from "./MemberDashboard";
+import MemberTabs from "./MemberTabs";
 import Pagination from "../../../components/shared/Pagination";
 import { customModalStyles } from "../../../components/shared/modalStyles";
 
@@ -92,7 +91,7 @@ const mockUsers = [
   {
     id: 3,
     username: "blockeduser",
-    fullname: "Blocked User",
+    fullname: "Blocked Member",
     email: "blockeduser@example.com",
     isBlocked: true,
     status: "blocked",
@@ -110,7 +109,7 @@ const mockUsers = [
   {
     id: 5,
     username: "trialuser",
-    fullname: "Trial User",
+    fullname: "Trial Member",
     email: "trialuser@example.com",
     isBlocked: false,
     status: "active",
@@ -118,7 +117,62 @@ const mockUsers = [
   },
 ];
 
-const Users = () => {
+const userStats = {
+  total: {
+    count: 9,
+  },
+  active: {
+    count: 8,
+    percentage: 89,
+  },
+  blocked: {
+    count: 1,
+    percentage: 11,
+  },
+  newUsers: {
+    count: 0,
+    trend: 0,
+  },
+  recentUsers: [
+    {
+      _id: "68569603088cb904eb26a009",
+      username: "ddd",
+      fullname: "sasa",
+      email: "ddd@ddd.ddd",
+      createdAt: "2025-06-21T11:22:43.644Z",
+    },
+    {
+      _id: "68235d4d5db113269123f9e8",
+      username: "mmmdsa",
+      fullname: "ghffdfdgd",
+      email: "mmm@mmm.mmm",
+      createdAt: "2025-05-13T14:55:09.510Z",
+    },
+    {
+      _id: "682304a946aad12499b38059",
+      username: "mmm",
+      fullname: "mmm",
+      email: "tewereus16@gmail.com",
+      createdAt: "2025-05-13T08:36:57.946Z",
+    },
+    {
+      _id: "6823006c145abe6609719755",
+      username: "kkk",
+      fullname: "kkkdfb",
+      email: "jjj@jjj.jjj",
+      createdAt: "2025-05-13T08:18:52.944Z",
+    },
+    {
+      _id: "67443f357ba768bb8b489d06",
+      username: "gfdgsfd",
+      fullname: "tteqwteewqeq",
+      email: "ghgasd@sadsd.das",
+      createdAt: "2024-11-25T09:11:17.945Z",
+    },
+  ],
+};
+
+const Members = () => {
   // Use mock data only
   const [users, setUsers] = useState(mockUsers);
   const [isView, setIsView] = useState(false);
@@ -184,7 +238,7 @@ const Users = () => {
   return (
     <div className="p-6 max-w-7xl mx-auto">
       {/* User Dashboard */}
-      {/* {userStats && <UserDashboard stats={userStats} />} */}
+      {userStats && <MemberDashboard stats={userStats} />}
 
       {/* Search and Filter */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-6">
@@ -245,7 +299,7 @@ const Users = () => {
 
       {/* User Tabs */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-        <UserTabs
+        <MemberTabs
           users={users}
           isLoading={isLoading}
           handleView={handleView}
@@ -289,30 +343,30 @@ const Users = () => {
         onRequestClose={() => setIsView(false)}
         overlayClassName="fixed inset-0 bg-black/75 flex items-center justify-center p-4 z-50 enhanced-scrollbar"
         className="w-full h-full"
-        contentLabel="View User"
+        contentLabel="View Member"
       >
-        <ViewUser setIsView={setIsView} selectedUser={modifyUser} />
+        <ViewMember setIsView={setIsView} selectedUser={modifyUser} />
       </Modal>
 
       <Modal
         isOpen={isEdit}
         onRequestClose={() => setIsEdit(false)}
         style={customModalStyles}
-        contentLabel="Edit User"
+        contentLabel="Edit Member"
       >
-        <EditUser setIsEdit={setIsEdit} selectedUser={modifyUser} />
+        <EditMember setIsEdit={setIsEdit} selectedUser={modifyUser} />
       </Modal>
 
       <Modal
         isOpen={isDelete}
         onRequestClose={() => setIsDelete(false)}
         style={customModalStyles}
-        contentLabel="Delete User"
+        contentLabel="Delete Member"
       >
-        <DeleteUser setIsDelete={setIsDelete} selectedUser={modifyUser} />
+        <DeleteMember setIsDelete={setIsDelete} selectedUser={modifyUser} />
       </Modal>
 
-      <BlockUserModal
+      <BlockMemberModal
         isOpen={isBlock}
         onClose={() => setIsBlock(false)}
         userToBlock={modifyUser}
@@ -321,4 +375,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Members;

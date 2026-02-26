@@ -8,15 +8,15 @@ import {
   FaPrint,
   FaMotorcycle,
 } from "react-icons/fa";
-import ManagerTable from "./ManagerTable";
-import ManagerSummary from "./ManagerSummary";
+import StaffTable from "./StaffTable";
+import StaffSummary from "./StaffSummary";
 
 // Helper function to combine class names conditionally
 const cn = (...classes) => {
   return classes.filter(Boolean).join(" ");
 };
 
-const ManagerTabs = ({
+const StaffTabs = ({
   managers,
   isLoading,
   handleView,
@@ -25,7 +25,7 @@ const ManagerTabs = ({
   showPagination = true,
 }) => {
   const [activeTab, setActiveTab] = useState("all");
-  const [filteredManagers, setFilteredManagers] = useState([]);
+  const [filteredStaffs, setFilteredStaffs] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -34,17 +34,17 @@ const ManagerTabs = ({
     if (!managers) return;
 
     if (activeTab === "all") {
-      setFilteredManagers(managers);
+      setFilteredStaffs(managers);
     } else if (activeTab === "active") {
-      setFilteredManagers(
+      setFilteredStaffs(
         managers.filter((manager) => manager.status === "active"),
       );
     } else if (activeTab === "inactive") {
-      setFilteredManagers(
+      setFilteredStaffs(
         managers.filter((manager) => manager.status === "inactive"),
       );
     } else if (activeTab === "waiting") {
-      setFilteredManagers(
+      setFilteredStaffs(
         managers.filter((manager) => manager.main_status === "waiting"),
       );
     }
@@ -54,12 +54,12 @@ const ManagerTabs = ({
   const tabs = [
     {
       id: "all",
-      label: "All Managers",
+      label: "All Staffs",
       icon: <FaUsers className="w-4 h-4" />,
     },
     {
       id: "active",
-      label: "Active Managers",
+      label: "Active Staffs",
       icon: <FaUserCheck className="w-4 h-4" />,
       badge:
         managers?.filter((manager) => manager.status === "active")?.length || 0,
@@ -68,7 +68,7 @@ const ManagerTabs = ({
     },
     {
       id: "inactive",
-      label: "Inactive Managers",
+      label: "Inactive Staffs",
       icon: <FaUserTimes className="w-4 h-4" />,
       badge:
         managers?.filter((manager) => manager.status === "inactive")?.length ||
@@ -88,7 +88,7 @@ const ManagerTabs = ({
     },
     {
       id: "analytics",
-      label: "Manager Analytics",
+      label: "Staff Analytics",
       icon: <FaChartBar className="w-4 h-4" />,
     },
   ];
@@ -125,14 +125,14 @@ const ManagerTabs = ({
 
       {/* Tab Content */}
       <div className="p-4">
-        {/* All Managers Tab */}
+        {/* All Staffs Tab */}
         {activeTab === "all" && (
           <div>
             <h3 className="text-lg font-medium text-gray-800 dark:text-white mb-4">
-              All Managers
+              All Staffs
             </h3>
-            <ManagerTable
-              managers={filteredManagers}
+            <StaffTable
+              managers={filteredStaffs}
               isLoading={isLoading}
               handleView={handleView}
               handleEdit={handleEdit}
@@ -142,14 +142,14 @@ const ManagerTabs = ({
           </div>
         )}
 
-        {/* Active Managers Tab */}
+        {/* Active Staffs Tab */}
         {activeTab === "active" && (
           <div>
             <h3 className="text-lg font-medium text-gray-800 dark:text-white mb-4">
-              Active Managers
+              Active Staffs
             </h3>
-            <ManagerTable
-              managers={filteredManagers}
+            <StaffTable
+              managers={filteredStaffs}
               isLoading={isLoading}
               handleView={handleView}
               handleEdit={handleEdit}
@@ -159,14 +159,14 @@ const ManagerTabs = ({
           </div>
         )}
 
-        {/* Inactive Managers Tab */}
+        {/* Inactive Staffs Tab */}
         {activeTab === "inactive" && (
           <div>
             <h3 className="text-lg font-medium text-gray-800 dark:text-white mb-4">
-              Inactive Managers
+              Inactive Staffs
             </h3>
-            <ManagerTable
-              managers={filteredManagers}
+            <StaffTable
+              managers={filteredStaffs}
               isLoading={isLoading}
               handleView={handleView}
               handleEdit={handleEdit}
@@ -180,10 +180,10 @@ const ManagerTabs = ({
         {activeTab === "waiting" && (
           <div>
             <h3 className="text-lg font-medium text-gray-800 dark:text-white mb-4">
-              Managers Waiting Approval
+              Staffs Waiting Approval
             </h3>
-            <ManagerTable
-              managers={filteredManagers}
+            <StaffTable
+              managers={filteredStaffs}
               isLoading={isLoading}
               handleView={handleView}
               handleEdit={handleEdit}
@@ -197,9 +197,9 @@ const ManagerTabs = ({
         {activeTab === "analytics" && (
           <div>
             <h3 className="text-lg font-medium text-gray-800 dark:text-white mb-4">
-              Manager Analytics
+              Staff Analytics
             </h3>
-            <ManagerSummary />
+            <StaffSummary />
           </div>
         )}
       </div>
@@ -207,4 +207,4 @@ const ManagerTabs = ({
   );
 };
 
-export default ManagerTabs;
+export default StaffTabs;

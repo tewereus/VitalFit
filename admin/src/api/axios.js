@@ -43,12 +43,14 @@ axiosPrivate.interceptors.request.use(
     // No need to manually add token as it will be sent automatically with cookies
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 // Helper to check if we are on the login page (with or without query params)
 function isOnLoginPage() {
-  return window.location.pathname === "/" || window.location.pathname === "/login";
+  return (
+    window.location.pathname === "/" || window.location.pathname === "/login"
+  );
 }
 
 // User type for this application
@@ -106,7 +108,7 @@ axiosPrivate.interceptors.response.use(
           {},
           {
             withCredentials: true,
-          }
+          },
         );
 
         // Retry the original request
@@ -148,7 +150,7 @@ axiosPrivate.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axiosPrivate;

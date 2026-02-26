@@ -4,7 +4,7 @@ import { FiX } from "react-icons/fi";
 import MultiSelect from "../../../components/shared/MultiSelect";
 import { toast } from "react-hot-toast";
 
-const AddManager = ({ setIsOpen }) => {
+const AddStaff = ({ setIsOpen }) => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     mobile: "",
@@ -37,7 +37,7 @@ const AddManager = ({ setIsOpen }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const performAddManager = async ({ securityPassword, headers } = {}) => {
+  const performAddStaff = async ({ securityPassword, headers } = {}) => {
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -55,14 +55,14 @@ const AddManager = ({ setIsOpen }) => {
       };
 
       // await dispatch(
-      //   addManager({
+      //   addStaff({
       //     data,
       //     securityPassword,
       //     headers,
       //   }),
       // ).unwrap();
 
-      toast.success("Manager added successfully");
+      toast.success("Staff added successfully");
       setIsOpen(false);
     } catch (error) {
       toast.error(error?.message || "Failed to add manager");
@@ -73,7 +73,7 @@ const AddManager = ({ setIsOpen }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // executeWithSecurity(performAddManager);
+    // executeWithSecurity(performAddStaff);
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -91,14 +91,14 @@ const AddManager = ({ setIsOpen }) => {
       };
 
       // await dispatch(
-      //   addManager({
+      //   addStaff({
       //     data,
       //     securityPassword,
       //     headers,
       //   }),
       // ).unwrap();
 
-      toast.success("Manager added successfully");
+      toast.success("Staff added successfully");
       setIsOpen(false);
     } catch (error) {
       toast.error(error?.message || "Failed to add manager");
@@ -113,7 +113,7 @@ const AddManager = ({ setIsOpen }) => {
       <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-            Add New Manager
+            Add New Staff
           </h2>
           <button
             onClick={() => setIsOpen(false)}
@@ -251,7 +251,7 @@ const AddManager = ({ setIsOpen }) => {
                 Processing...
               </>
             ) : (
-              "Add Manager"
+              "Add Staff"
             )}
           </button>
         </div>
@@ -260,4 +260,4 @@ const AddManager = ({ setIsOpen }) => {
   );
 };
 
-export default AddManager;
+export default AddStaff;

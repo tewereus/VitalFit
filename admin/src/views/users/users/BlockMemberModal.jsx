@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaUserLock, FaTimes, FaSpinner, FaUserSlash } from "react-icons/fa";
 
-const BlockUserModal = ({
+const BlockMemberModal = ({
   isOpen,
   onClose,
   userToBlock,
@@ -303,4 +303,4 @@ const BlockUserModal = ({
   );
 };
 
-export default BlockUserModal;
+export default BlockMemberModal;

@@ -2,7 +2,7 @@ import React from "react";
 import { FiEye, FiEdit2, FiTrash2, FiList } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
-const ManagerTable = ({
+const StaffTable = ({
   managers,
   isLoading,
   handleView,
@@ -167,4 +167,4 @@ const ManagerTable = ({
   );
 };
 
-export default ManagerTable;
+export default StaffTable;

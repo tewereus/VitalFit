@@ -8,7 +8,7 @@ const mockUsers = [
   { id: 5, username: "trialuser" },
 ];
 
-const DeleteUser = ({ setIsDelete, selectedUser }) => {
+const DeleteMember = ({ setIsDelete, selectedUser }) => {
   // Use mock data for deletion
   const user =
     mockUsers.find((u) => u.username === selectedUser?.username) ||
@@ -69,4 +69,4 @@ const DeleteUser = ({ setIsDelete, selectedUser }) => {
   );
 };
 
-export default DeleteUser;
+export default DeleteMember;

@@ -50,7 +50,7 @@ const mockUsers = [
   },
 ];
 
-const EditUser = ({ setIsEdit, selectedUser }) => {
+const EditMember = ({ setIsEdit, selectedUser }) => {
   // Use mock data for editing
   const user =
     mockUsers.find((u) => u.username === selectedUser?.username) ||
@@ -179,4 +179,4 @@ const EditUser = ({ setIsEdit, selectedUser }) => {
   );
 };
 
-export default EditUser;
+export default EditMember;

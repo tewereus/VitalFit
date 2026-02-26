@@ -51,7 +51,7 @@ const mockUsers = [
   },
 ];
 
-const UserSummary = () => {
+const MemberSummary = () => {
   const users = mockUsers;
 
   // Format numbers with commas
@@ -451,4 +451,4 @@ const UserSummary = () => {
   );
 };
 
-export default UserSummary;
+export default MemberSummary;

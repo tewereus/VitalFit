@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 
 import { useSelector, useDispatch } from "react-redux";
-import AddManager from "./AddManager";
+import AddStaff from "./AddStaff";
 import Pagination from "../../../components/shared/Pagination";
-import EditManager from "./EditManager";
-import DeleteManager from "./DeleteManager";
-import ViewManager from "./ViewManager";
+import EditStaff from "./EditStaff";
+import DeleteStaff from "./DeleteStaff";
+import ViewStaff from "./ViewStaff";
 import { customModalStyles } from "../../../components/shared/modalStyles";
-import ManagerTabs from "./ManagerTabs";
-import ManagerDashboard from "./ManagerDashboard";
+import StaffTabs from "./StaffTabs";
+import StaffDashboard from "./StaffDashboard";
 
 Modal.setAppElement("#root");
 
@@ -320,7 +320,7 @@ const managerStats = {
   },
 };
 
-const Manager = () => {
+const Staff = () => {
   const dispatch = useDispatch();
   const [selectedUser, setSelectedUser] = useState(null);
   const [isAdd, setIsAdd] = useState(false);
@@ -349,8 +349,8 @@ const Manager = () => {
   //     searchField,
   //   };
   //   dispatch(getAllStaff(obj));
-  //   dispatch(getManagerStats());
-  //   dispatch(getManagerSummary());
+  //   dispatch(getStaffStats());
+  //   dispatch(getStaffSummary());
   //   dispatch(getRecentStaff());
   // }, [dispatch, pageNumber, parPage, sort, search, searchField]);
 
@@ -393,13 +393,13 @@ const Manager = () => {
             className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700
                      focus:ring-4 focus:ring-teal-500/50 transition-colors"
           >
-            Add Manager
+            Add Staff
           </button>
         </div>
       </div>
 
       {/* Dashboard Stats */}
-      <ManagerDashboard stats={managerStats} />
+      <StaffDashboard stats={managerStats} />
 
       {/* Search and Sort Section */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-6">
@@ -471,7 +471,7 @@ const Manager = () => {
       </div>
 
       {/* Tabbed Interface */}
-      <ManagerTabs
+      <StaffTabs
         managers={managers}
         handleView={handleView}
         handleEdit={handleEdit}
@@ -514,47 +514,47 @@ const Manager = () => {
         isOpen={isAdd}
         onRequestClose={() => setIsAdd(false)}
         style={customModalStyles}
-        contentLabel="Add Manager"
+        contentLabel="Add Staff"
         shouldCloseOnOverlayClick={true}
         shouldCloseOnEsc={true}
       >
-        <AddManager setIsOpen={setIsAdd} />
+        <AddStaff setIsOpen={setIsAdd} />
       </Modal>
 
       <Modal
         isOpen={isView}
         onRequestClose={() => setIsView(false)}
         style={customModalStyles}
-        contentLabel="View Manager"
+        contentLabel="View Staff"
         shouldCloseOnOverlayClick={true}
         shouldCloseOnEsc={true}
       >
-        <ViewManager setIsView={setIsView} selectedUser={selectedUser} />
+        <ViewStaff setIsView={setIsView} selectedUser={selectedUser} />
       </Modal>
 
       <Modal
         isOpen={isEdit}
         onRequestClose={() => setIsEdit(false)}
         style={customModalStyles}
-        contentLabel="Edit Manager"
+        contentLabel="Edit Staff"
         shouldCloseOnOverlayClick={true}
         shouldCloseOnEsc={true}
       >
-        <EditManager setIsEdit={setIsEdit} selectedUser={selectedUser} />
+        <EditStaff setIsEdit={setIsEdit} selectedUser={selectedUser} />
       </Modal>
 
       <Modal
         isOpen={isDelete}
         onRequestClose={() => setIsDelete(false)}
         style={customModalStyles}
-        contentLabel="Delete Manager"
+        contentLabel="Delete Staff"
         shouldCloseOnOverlayClick={true}
         shouldCloseOnEsc={true}
       >
-        <DeleteManager setIsDelete={setIsDelete} selectedUser={selectedUser} />
+        <DeleteStaff setIsDelete={setIsDelete} selectedUser={selectedUser} />
       </Modal>
     </div>
   );
 };
 
-export default Manager;
+export default Staff;

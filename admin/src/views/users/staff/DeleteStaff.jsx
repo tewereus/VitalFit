@@ -3,22 +3,22 @@ import { useDispatch } from "react-redux";
 import { FiX, FiAlertTriangle } from "react-icons/fi";
 import { toast } from "react-hot-toast";
 
-const DeleteManager = ({ setIsDelete, selectedUser }) => {
+const DeleteStaff = ({ setIsDelete, selectedUser }) => {
   const dispatch = useDispatch();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const performDeleteManager = async ({ securityPassword, headers } = {}) => {
+  const performDeleteStaff = async ({ securityPassword, headers } = {}) => {
     setIsSubmitting(true);
 
     try {
       // await dispatch(
-      //   deleteManager({
+      //   deleteStaff({
       //     id: selectedUser._id,
       //     securityPassword,
       //     headers,
       //   })
       // ).unwrap();
-      toast.success("Manager deleted successfully");
+      toast.success("Staff deleted successfully");
       setIsDelete(false);
     } catch (error) {
       toast.error(error?.message || "Failed to delete manager");
@@ -28,18 +28,18 @@ const DeleteManager = ({ setIsDelete, selectedUser }) => {
   };
 
   const handleDelete = () => {
-    // executeWithSecurity(performDeleteManager);
+    // executeWithSecurity(performDeleteStaff);
     setIsSubmitting(true);
 
     try {
       // await dispatch(
-      //   deleteManager({
+      //   deleteStaff({
       //     id: selectedUser._id,
       //     securityPassword,
       //     headers,
       //   })
       // ).unwrap();
-      toast.success("Manager deleted successfully");
+      toast.success("Staff deleted successfully");
       setIsDelete(false);
     } catch (error) {
       toast.error(error?.message || "Failed to delete manager");
@@ -51,9 +51,7 @@ const DeleteManager = ({ setIsDelete, selectedUser }) => {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden">
       <div className="flex justify-between items-center p-6 border-b dark:border-gray-700">
-        <h2 className="text-xl font-semibold dark:text-white">
-          Delete Manager
-        </h2>
+        <h2 className="text-xl font-semibold dark:text-white">Delete Staff</h2>
         <button
           onClick={() => setIsDelete(false)}
           className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
@@ -119,7 +117,7 @@ const DeleteManager = ({ setIsDelete, selectedUser }) => {
                 Processing...
               </>
             ) : (
-              "Delete Manager"
+              "Delete Staff"
             )}
           </button>
         </div>
@@ -128,4 +126,4 @@ const DeleteManager = ({ setIsDelete, selectedUser }) => {
   );
 };
 
-export default DeleteManager;
+export default DeleteStaff;

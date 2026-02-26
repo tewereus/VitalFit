@@ -1,4 +1,4 @@
-const Admin = require("../../models/users/adminModel");
+const Admin = require("../../models/users/userModel");
 const User = require("../../models/users/userModel");
 const asyncHandler = require("express-async-handler");
 const { generateToken } = require("../../config/jwtToken");
@@ -6,7 +6,7 @@ const validateMongoDbId = require("../../utils/validateMongoDbId");
 const { generateRefreshToken } = require("../../config/refreshToken");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
-const Manager = require("../../models/users/managerModel");
+const Manager = require("../../models/users/userModel");
 const jwt = require("jsonwebtoken");
 const { createSession } = require("../utils/sessionCtrl");
 
@@ -118,6 +118,7 @@ const loginAdmin = asyncHandler(async (req, res) => {
         email: findAdmin?.email,
         mobile: findAdmin?.mobile,
         preference: findAdmin.preference,
+        role: findAdmin?.role,
         image: findAdmin?.image,
         token: accessToken, // Include token in response for backward compatibility
         lastLogin: findAdmin.lastLoginAt,
@@ -248,87 +249,6 @@ const viewAdminProfile = asyncHandler(async (req, res) => {
   try {
     const user = await Admin.findById(id).select("-password");
     res.json(user);
-  } catch (error) {
-    throw new Error(error);
-  }
-});
-
-const getaUser = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  validateMongoDbId(id);
-
-  try {
-    const getaUser = await User.findById(id);
-    res.json({
-      getaUser,
-    });
-  } catch (error) {
-    throw new Error(error);
-  }
-});
-
-/**
- * @desc    Block a user
- * @route   POST /api/v1/admin/users/block
- * @access  Private/Admin
- */
-const blockUser = asyncHandler(async (req, res) => {
-  const { userId, reason, duration, note } = req.body;
-  // validateMongoDbId(userId);
-  console.log(userId);
-
-  if (!userId) {
-    res.status(400);
-    throw new Error("User ID is required");
-  }
-  try {
-    const user = await User.findById(userId);
-
-    if (!user) {
-      res.status(404);
-      throw new Error("User not found");
-    }
-
-    user.isBlocked = true;
-    user.reason = reason || "manual_block";
-
-    if (duration && duration > 0) {
-      user.blockedUntil = new Date(Date.now() + duration * 60 * 1000); // duration in minutes
-    } else {
-      user.blockedUntil = null; // Indefinite block
-    }
-
-    await user.save();
-
-    res.json({ message: "User blocked successfully", user });
-  } catch (error) {
-    throw new Error(error);
-  }
-});
-
-/**
- * @desc    Unblock a user
- * @route   POST /api/v1/admin/users/unblock
- * @access  Private/Admin
- */
-const unblockUser = asyncHandler(async (req, res) => {
-  const { userId } = req.body;
-
-  // validateMongoDbId(id);
-
-  try {
-    const user = await User.findByIdAndUpdate(
-      userId,
-      { isBlocked: false, reason: "", blockedUntil: null },
-      { new: true },
-    );
-
-    if (!user) {
-      res.status(404);
-      throw new Error("User not found");
-    }
-
-    res.json({ message: "User unblocked successfully", user });
   } catch (error) {
     throw new Error(error);
   }
@@ -750,7 +670,7 @@ const toggleDarkMode = asyncHandler(async (req, res) => {
       id,
       { "preference.mode": mode },
       {
-        new: true,
+        returnDocument: "after",
         runValidators: true, // Optional: Ensure that validators are run
       },
     ).select("preference.mode -_id");
@@ -1105,20 +1025,10 @@ module.exports = {
   loginAdmin,
   logout,
   viewAdminProfile,
-  getaUser,
-  updateProfile,
-  profileUpload,
   //   updateUser,
   updatePassword,
-  blockUser,
-  unblockUser,
-  blockAffiliateUser,
-  unblockAffiliateUser,
   deleteUser,
-  forgotPasswordToken,
-  resetPassword,
   getAllUsers,
-  getAllAdmins,
   checkAdminPass,
   addManager,
   changeMainStatus,
@@ -1127,22 +1037,9 @@ module.exports = {
   deleteManager,
   updateManager,
   toggleDarkMode,
-  getAllPrinters,
-  getAllRiders,
-  updateUser,
-  getUserStats,
-  getUserSummary,
-  getAffiliateUsers,
-  getAffiliateStats,
-  getUserEarnings,
-  getManagerStats,
-  getManagerSummary,
-  getRecentManagers,
-  getDetailedManagerInfo,
   handleRefreshToken,
   getSessions,
   terminateSession,
   terminateAllOtherSessions,
   logoutFromAllDevices,
-  getUserFullDetails,
 };

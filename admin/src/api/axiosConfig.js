@@ -1,9 +1,9 @@
 let base_url;
 
 if (process.env.NODE_ENV === "production") {
-  base_url = "https://onprintz.onrender.com/api/v1";
+  base_url = "https://.com/api/v1";
 } else {
-  base_url = "http://localhost:3773/api/v1";
+  base_url = "http://localhost:7113/api/v1";
 }
 
 export { base_url };

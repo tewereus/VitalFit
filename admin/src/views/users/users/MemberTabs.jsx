@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaUsers, FaUserCheck, FaUserTimes, FaChartBar } from "react-icons/fa";
-import UserTable from "./UserTable";
-import UserSummary from "./UserSummary";
+import MemberTable from "./MemberTable";
+import MemberSummary from "./MemberSummary";
 
 // Gold theme mock data
 const mockUsers = [
@@ -46,7 +46,7 @@ const cn = (...classes) => {
   return classes.filter(Boolean).join(" ");
 };
 
-const UserTabs = ({
+const MemberTabs = ({
   users = mockUsers,
   isLoading = false,
   handleView,
@@ -139,7 +139,7 @@ const UserTabs = ({
             <h3 className="text-lg font-medium text-gray-800 dark:text-white mb-4">
               All Users
             </h3>
-            <UserTable
+            <MemberTable
               users={filteredUsers}
               isLoading={isLoading}
               handleView={handleView}
@@ -157,7 +157,7 @@ const UserTabs = ({
             <h3 className="text-lg font-medium text-gray-800 dark:text-white mb-4">
               Active Users
             </h3>
-            <UserTable
+            <MemberTable
               users={filteredUsers}
               isLoading={isLoading}
               handleView={handleView}
@@ -175,7 +175,7 @@ const UserTabs = ({
             <h3 className="text-lg font-medium text-gray-800 dark:text-white mb-4">
               Blocked Users
             </h3>
-            <UserTable
+            <MemberTable
               users={filteredUsers}
               isLoading={isLoading}
               handleView={handleView}
@@ -193,7 +193,7 @@ const UserTabs = ({
             <h3 className="text-lg font-medium text-gray-800 dark:text-white mb-4">
               User Analytics
             </h3>
-            <UserSummary />
+            <MemberSummary />
           </div>
         )}
       </div>
@@ -201,4 +201,4 @@ const UserTabs = ({
   );
 };
 
-export default UserTabs;
+export default MemberTabs;

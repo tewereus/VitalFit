@@ -4,7 +4,7 @@ import { FiX } from "react-icons/fi";
 import MultiSelect from "../../../components/shared/MultiSelect";
 import { toast } from "react-hot-toast";
 
-const EditManager = ({ setIsEdit, selectedUser }) => {
+const EditStaff = ({ setIsEdit, selectedUser }) => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: selectedUser?.email || "",
@@ -32,7 +32,7 @@ const EditManager = ({ setIsEdit, selectedUser }) => {
     }));
   };
 
-  const performUpdateManager = async ({ securityPassword, headers } = {}) => {
+  const performUpdateStaff = async ({ securityPassword, headers } = {}) => {
     setIsSubmitting(true);
 
     try {
@@ -42,14 +42,14 @@ const EditManager = ({ setIsEdit, selectedUser }) => {
       };
 
       await dispatch(
-        updateManager({
+        updateStaff({
           data: { id: selectedUser._id, data },
           securityPassword,
           headers,
         }),
       ).unwrap();
 
-      toast.success("Manager updated successfully");
+      toast.success("Staff updated successfully");
       setIsEdit(false);
     } catch (error) {
       toast.error(error?.message || "Failed to update manager");
@@ -69,14 +69,14 @@ const EditManager = ({ setIsEdit, selectedUser }) => {
       };
 
       // await dispatch(
-      //   updateManager({
+      //   updateStaff({
       //     data: { id: selectedUser._id, data },
       //     securityPassword,
       //     headers,
       //   }),
       // ).unwrap();
 
-      toast.success("Manager updated successfully");
+      toast.success("Staff updated successfully");
       setIsEdit(false);
     } catch (error) {
       toast.error(error?.message || "Failed to update manager");
@@ -90,7 +90,7 @@ const EditManager = ({ setIsEdit, selectedUser }) => {
       <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-            Edit Manager
+            Edit Staff
           </h2>
           <button
             onClick={() => setIsEdit(false)}
@@ -105,7 +105,7 @@ const EditManager = ({ setIsEdit, selectedUser }) => {
 
       <div className="flex-1 overflow-y-auto">
         <form
-          id="editManagerForm"
+          id="editStaffForm"
           onSubmit={handleSubmit}
           className="p-6 space-y-6"
         >
@@ -209,7 +209,7 @@ const EditManager = ({ setIsEdit, selectedUser }) => {
             Cancel
           </button>
           <button
-            form="editManagerForm"
+            form="editStaffForm"
             type="submit"
             disabled={isSubmitting}
             className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700
@@ -241,7 +241,7 @@ const EditManager = ({ setIsEdit, selectedUser }) => {
                 Processing...
               </>
             ) : (
-              "Update Manager"
+              "Update Staff"
             )}
           </button>
         </div>
@@ -250,4 +250,4 @@ const EditManager = ({ setIsEdit, selectedUser }) => {
   );
 };
 
-export default EditManager;
+export default EditStaff;

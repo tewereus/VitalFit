@@ -19,7 +19,7 @@ const {
   skip,
 } = require("./middlewares/rateLimiting");
 
-// const adminRouter = require("./routes/users/adminRoutes");
+const adminRouter = require("./routes/users/adminRoutes");
 // const sessionRouter = require("./routes/utils/sessionRoutes");
 // const settingRouter = require("./routes/other/settingRoutes");
 // const dashboardRouter = require("./routes/dashboard/dashboardRoutes");
@@ -51,7 +51,7 @@ app.use(
   }),
 );
 
-// app.use("/api/v1/admin", adminRouter);
+app.use("/api/v1/admin", adminRouter);
 // app.use("/api/v1/sessions", sessionRouter);
 // app.use("/api/v1/setting", settingRouter);
 // app.use("/api/v1/dashboard", dashboardRouter);
