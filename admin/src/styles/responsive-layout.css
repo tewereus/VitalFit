@@ -1,0 +1,106 @@
+/* Additional responsive layout styles for admin panel */
+
+/* Smooth transitions for sidebar */
+.sidebar-transition {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 768px) {
+  /* Ensure touch targets are at least 44px */
+  .mobile-touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Improve text readability on mobile */
+  .mobile-text-size {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  /* Better spacing for mobile */
+  .mobile-spacing {
+    padding: 0.75rem;
+  }
+
+  /* Hide text labels on very small screens */
+  .mobile-hide-text {
+    display: none;
+  }
+}
+
+/* Tablet-specific improvements */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .tablet-spacing {
+    padding: 1rem;
+  }
+}
+
+/* Desktop improvements */
+@media (min-width: 1024px) {
+  .desktop-spacing {
+    padding: 1.5rem;
+  }
+}
+
+/* Overlay animations */
+.overlay-enter {
+  opacity: 0;
+}
+
+.overlay-enter-active {
+  opacity: 1;
+  transition: opacity 0.2s ease-in;
+}
+
+.overlay-exit {
+  opacity: 1;
+}
+
+.overlay-exit-active {
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+}
+
+/* Sidebar slide animations */
+.sidebar-enter {
+  transform: translateX(-100%);
+}
+
+.sidebar-enter-active {
+  transform: translateX(0);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar-exit {
+  transform: translateX(0);
+}
+
+.sidebar-exit-active {
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Focus improvements for accessibility */
+.focus-visible:focus {
+  outline: 2px solid #14b8a6;
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .sidebar-item {
+    border: 1px solid currentColor;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .sidebar-transition,
+  .overlay-enter-active,
+  .overlay-exit-active,
+  .sidebar-enter-active,
+  .sidebar-exit-active {
+    transition: none;
+  }
+}

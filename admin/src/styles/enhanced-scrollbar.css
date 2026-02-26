@@ -1,0 +1,45 @@
+/* High-quality scrollbar styles for admin */
+
+/* For Webkit browsers (Chrome, Safari, newer versions of Opera) */
+.enhanced-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.enhanced-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+}
+
+.enhanced-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(20, 184, 166, 0.5); /* teal-500 with opacity */
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+.enhanced-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(20, 184, 166, 0.8); /* teal-500 with higher opacity on hover */
+}
+
+/* For Firefox */
+.enhanced-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(20, 184, 166, 0.5) rgba(0, 0, 0, 0.05);
+}
+
+/* Dark mode adjustments */
+.dark .enhanced-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.dark .enhanced-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(20, 184, 166, 0.6); /* slightly brighter in dark mode */
+}
+
+.dark .enhanced-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(20, 184, 166, 0.9);
+}
+
+.dark .enhanced-scrollbar {
+  scrollbar-color: rgba(20, 184, 166, 0.6) rgba(255, 255, 255, 0.05);
+}
