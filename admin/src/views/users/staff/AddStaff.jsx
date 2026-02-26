@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FiX } from "react-icons/fi";
 import MultiSelect from "../../../components/shared/MultiSelect";
 import { toast } from "react-hot-toast";
+import { addStaff } from "../../../store/auth/authSlice";
 
 const AddStaff = ({ setIsOpen }) => {
   const dispatch = useDispatch();
@@ -31,44 +32,27 @@ const AddStaff = ({ setIsOpen }) => {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.mobile) newErrors.phone = "Phone number is required";
+    if (!formData.fullname.trim()) newErrors.fullname = "Full name is required";
+
+    if (!/^\d{9}$/.test(formData.mobile))
+      newErrors.mobile = "Mobile must be exactly 9 digits";
+
+    if (!formData.email) newErrors.email = "Email is required";
+
+    if (!formData.password) newErrors.password = "Password is required";
+    else if (
+      formData.password.length < 8 ||
+      !/[A-Z]/.test(formData.password) ||
+      !/[a-z]/.test(formData.password) ||
+      !/\d/.test(formData.password) ||
+      !/[!@#$%^&*]/.test(formData.password)
+    ) {
+      newErrors.password =
+        "Min 8 chars, include uppercase, lowercase, number & special char";
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
-
-  const performAddStaff = async ({ securityPassword, headers } = {}) => {
-    const validationErrors = validateForm();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    try {
-      const data = {
-        mobile: formData.mobile,
-        email: formData.email,
-        password: formData.password,
-        fullname: formData.fullname,
-      };
-
-      // await dispatch(
-      //   addStaff({
-      //     data,
-      //     securityPassword,
-      //     headers,
-      //   }),
-      // ).unwrap();
-
-      toast.success("Staff added successfully");
-      setIsOpen(false);
-    } catch (error) {
-      toast.error(error?.message || "Failed to add manager");
-    } finally {
-      setIsSubmitting(false);
-    }
   };
 
   const handleSubmit = (e) => {
@@ -88,20 +72,13 @@ const AddStaff = ({ setIsOpen }) => {
         email: formData.email,
         password: formData.password,
         fullname: formData.fullname,
+        role: "staff",
       };
 
-      // await dispatch(
-      //   addStaff({
-      //     data,
-      //     securityPassword,
-      //     headers,
-      //   }),
-      // ).unwrap();
-
-      toast.success("Staff added successfully");
+      dispatch(addStaff({ data })).unwrap();
       setIsOpen(false);
     } catch (error) {
-      toast.error(error?.message || "Failed to add manager");
+      toast.error(error?.message || "Failed to add staff");
     } finally {
       setIsSubmitting(false);
     }

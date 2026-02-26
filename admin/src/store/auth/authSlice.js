@@ -108,6 +108,17 @@ export const toggleDarkMode = createAsyncThunk(
   }
 );
 
+export const addStaff = createAsyncThunk(
+  "auth/add-staff",
+  async (data, thunkAPI) => {
+    try {
+      return await authService.addStaff(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -308,6 +319,26 @@ export const authSlice = createSlice({
         state.isSuccess = false;
         state.isError = true;
         state.message = action.error.message;
+      })
+      .addCase(addStaff.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addStaff.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.message = "Staff added successfully";
+        toast.success(state.message);
+      })
+      .addCase(addStaff.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.message =
+          action.payload?.message ||
+          action.error?.message ||
+          "Failed to add staff";
+        toast.error(state.message);
       });
   },
 });

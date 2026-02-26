@@ -99,6 +99,12 @@ const toggleDarkMode = async (data) => {
   return response.data;
 };
 
+const addStaff = async (data) => {
+  console.log(data);
+  const response = await axiosPrivate.post(`/admin/add-staff`, data.data);
+  return response.data;
+};
+
 const authService = {
   adminLogin,
   logout,
@@ -109,6 +115,7 @@ const authService = {
   uploadProfile,
   updatePassword,
   toggleDarkMode,
+  addStaff,
 };
 
 export default authService;

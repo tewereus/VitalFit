@@ -9,7 +9,7 @@ const {
   deleteUser,
   getAllUsers,
   checkAdminPass,
-  addManager,
+  addStaff,
   changeMainStatus,
   getAllManagers,
   toggleDarkMode,
@@ -41,12 +41,13 @@ router.post("/sessions/logout-all", adminAuthMiddleware, logoutFromAllDevices);
 router.put("/update-password", adminAuthMiddleware, updatePassword);
 router.get("/all-users", adminAuthMiddleware, getAllUsers);
 router.post("/check-admin", adminAuthMiddleware, checkAdminPass);
-router.post("/add-manager", adminAuthMiddleware, addManager);
-router.put("/get-manager/:id/update", adminAuthMiddleware, updateManager);
-router.delete("/get-manager/:id/delete", adminAuthMiddleware, deleteManager);
-router.post("/manager-status/:id", adminAuthMiddleware, changeMainStatus);
-router.get("/all-managers", adminAuthMiddleware, getAllManagers);
-router.get("/get-manager/:id", adminAuthMiddleware, getManagerInfo);
+router.post("/add-staff", adminAuthMiddleware, addStaff);
+router.put("/get-staff/:id/update", adminAuthMiddleware, updateManager);
+router.delete("/get-staff/:id/delete", adminAuthMiddleware, deleteManager);
+router.post("/staff-status/:id", adminAuthMiddleware, changeMainStatus);
+router.get("/all-staffs", adminAuthMiddleware, getAllManagers);
+router.get("/get-staff/:id", adminAuthMiddleware, getManagerInfo);
 router.put("/dark-mode", adminAuthMiddleware, toggleDarkMode);
 
 module.exports = router;
+

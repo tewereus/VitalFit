@@ -6,7 +6,6 @@ const validateMongoDbId = require("../../utils/validateMongoDbId");
 const { generateRefreshToken } = require("../../config/refreshToken");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
-const Manager = require("../../models/users/userModel");
 const jwt = require("jsonwebtoken");
 const { createSession } = require("../utils/sessionCtrl");
 
@@ -485,26 +484,16 @@ const checkAdminPass = asyncHandler(async (req, res) => {
   }
 });
 
-const addManager = asyncHandler(async (req, res) => {
+const addStaff = asyncHandler(async (req, res) => {
   // const {id} = req.user
-  const { mobile } = req.body;
+  const { email } = req.body;
   console.log(req.body);
   try {
-    const manager = await Manager.findOne({ mobile });
-    if (manager) throw new Error("Manager with this mobile already exists");
-    const newManager = await Manager.create(req.body); // check if it can be added with await manager.save()
-    const token = await newManager.createManagerToken();
-    await newManager.save();
-    console.log(token);
-    // const messageUrl = `Hi please follow this link to start your journey as a manager. This link is valid for 1 hour from now <a href='http://localhost:5000/api/v1/manager/manager/${token}'>Click Here</a>`;
-    // const data = {
-    //   to: email,
-    //   subject: "Verify Account",
-    //   text: "Hey future manager",
-    //   htm: messageUrl,
-    // };
-    // sendEmail(data);
-    res.json(newManager);
+    const staff = await User.findOne({ email });
+    if (staff) throw new Error("Staff with this email already exists");
+    const newStaff = await User.create(req.body); // check if it can be added with await staff.save()
+    await newStaff.save();
+    res.json(newStaff);
   } catch (error) {
     throw new Error(error);
   }
@@ -1030,7 +1019,7 @@ module.exports = {
   deleteUser,
   getAllUsers,
   checkAdminPass,
-  addManager,
+  addStaff,
   changeMainStatus,
   getAllManagers,
   getManagerInfo,
