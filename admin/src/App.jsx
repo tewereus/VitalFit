@@ -21,9 +21,9 @@ const router = createBrowserRouter([
   {
     path: "/admin",
     element: (
-      <PrivateRoutes>
-        <MainLayout />
-      </PrivateRoutes>
+      // <PrivateRoutes>
+      <MainLayout />
+      // </PrivateRoutes>
     ),
     children: [{ index: true, element: <Dashboard /> }],
   },
