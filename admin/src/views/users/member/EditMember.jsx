@@ -28,7 +28,7 @@ const STEPS = [
   { name: "Access", icon: FiKey },
 ];
 
-const EditMember = ({ setIsEdit, selectedUser }) => {
+const EditMember = ({ setIsEdit, selectedUser, onCompleted }) => {
   const dispatch = useDispatch();
   const user = selectedUser || {};
 
@@ -109,6 +109,7 @@ const EditMember = ({ setIsEdit, selectedUser }) => {
           payload,
         }),
       ).unwrap();
+      if (onCompleted) onCompleted();
       setIsEdit(false);
     } catch (error) {
       console.error(error);

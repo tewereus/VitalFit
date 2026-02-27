@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { FiX, FiAlertTriangle } from "react-icons/fi";
 import { deleteMember } from "../../../store/auth/authSlice";
 
-const DeleteMember = ({ setIsDelete, selectedUser }) => {
+const DeleteMember = ({ setIsDelete, selectedUser, onCompleted }) => {
   const dispatch = useDispatch();
   const user = selectedUser;
 
@@ -13,6 +13,7 @@ const DeleteMember = ({ setIsDelete, selectedUser }) => {
     }
     try {
       await dispatch(deleteMember(user._id)).unwrap();
+      if (onCompleted) onCompleted();
       setIsDelete(false);
     } catch (error) {
       console.error(error);
@@ -22,9 +23,7 @@ const DeleteMember = ({ setIsDelete, selectedUser }) => {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-sm sm:max-w-md max-h-[90vh] overflow-y-auto">
       <div className="flex justify-between items-center px-4 py-4 sm:p-6 border-b dark:border-gray-700">
-        <h2 className="text-xl font-semibold dark:text-white">
-          Delete Member
-        </h2>
+        <h2 className="text-xl font-semibold dark:text-white">Delete Member</h2>
         <button
           onClick={() => setIsDelete(false)}
           className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"

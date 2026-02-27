@@ -10,6 +10,7 @@ const {
   getAllUsers,
   checkAdminPass,
   addStaff,
+  getMembers,
   addMember,
   updateMember,
   deleteMember,
@@ -44,6 +45,7 @@ router.put("/update-password", adminAuthMiddleware, updatePassword);
 router.get("/all-users", adminAuthMiddleware, getAllUsers);
 router.post("/check-admin", adminAuthMiddleware, checkAdminPass);
 router.post("/add-staff", adminAuthMiddleware, addStaff);
+router.get("/members", adminAuthMiddleware, getMembers);
 router.post("/members", adminAuthMiddleware, addMember);
 router.put("/members/:id", adminAuthMiddleware, updateMember);
 router.delete("/members/:id", adminAuthMiddleware, deleteMember);
@@ -54,4 +56,3 @@ router.get("/get-staff/:id", adminAuthMiddleware, getManagerInfo);
 router.put("/dark-mode", adminAuthMiddleware, toggleDarkMode);
 
 module.exports = router;
-

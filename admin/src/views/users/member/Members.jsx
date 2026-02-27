@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Modal from "react-modal";
 import { FiTrash } from "react-icons/fi";
 import ViewMember from "./ViewMember";
@@ -11,6 +11,7 @@ import MemberTabs from "./MemberTabs";
 import Pagination from "../../../components/shared/Pagination";
 import { customModalStyles } from "../../../components/shared/modalStyles";
 import AddMember from "./AddMember";
+import { axiosPrivate } from "../../../api/axios";
 
 // const Users = () => {
 //   const dispatch = useDispatch();
@@ -70,54 +71,6 @@ const formatDate = (dateString) => {
   return new Date(dateString).toLocaleDateString(undefined, options);
 };
 
-const mockUsers = [
-  {
-    id: 1,
-    username: "john",
-    fullname: "John Doe",
-    email: "john@example.com",
-    isBlocked: false,
-    status: "active",
-    joined: "2026-02-01T00:00:00.000Z",
-  },
-  {
-    id: 2,
-    username: "jane",
-    fullname: "Jane Smith",
-    email: "jane@example.com",
-    isBlocked: false,
-    status: "active",
-    joined: "2026-02-10T00:00:00.000Z",
-  },
-  {
-    id: 3,
-    username: "blockeduser",
-    fullname: "Blocked Member",
-    email: "blockeduser@example.com",
-    isBlocked: true,
-    status: "blocked",
-    joined: "2026-01-15T00:00:00.000Z",
-  },
-  {
-    id: 4,
-    username: "goldmember",
-    fullname: "Gold Member",
-    email: "goldmember@example.com",
-    isBlocked: false,
-    status: "active",
-    joined: "2026-02-20T00:00:00.000Z",
-  },
-  {
-    id: 5,
-    username: "trialuser",
-    fullname: "Trial Member",
-    email: "trialuser@example.com",
-    isBlocked: false,
-    status: "active",
-    joined: "2026-02-25T00:00:00.000Z",
-  },
-];
-
 const userStats = {
   total: {
     count: 9,
@@ -174,8 +127,9 @@ const userStats = {
 };
 
 const Members = () => {
-  // Use mock data only
-  const [users, setUsers] = useState(mockUsers);
+  const dispatch = useDispatch();
+  const [allUsers, setAllUsers] = useState([]);
+  const [users, setUsers] = useState([]);
   const [isView, setIsView] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -192,29 +146,61 @@ const Members = () => {
     sortBy: "createdAt",
     order: "desc",
   });
-  const isLoading = false;
+  const [isLoading, setIsLoading] = useState(false);
   const sortOptions = ["createdAt", "username", "fullname"];
+
+  const fetchMembers = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axiosPrivate.get("/admin/members");
+      const data = Array.isArray(response.data) ? response.data : [];
+      setAllUsers(data);
+      setUsers(data);
+    } catch (error) {
+      console.error("Failed to fetch members", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchMembers();
+  }, []);
 
   // All handlers operate on mock data
   const handleSearchChange = (e) => {
-    setSearch(e.target.value);
-    // Filter mock users
+    const value = e.target.value;
+    setSearch(value);
+    const base = allUsers || [];
+    if (!value.trim()) {
+      setUsers(base);
+      return;
+    }
+    const lower = value.toLowerCase();
     setUsers(
-      mockUsers.filter((user) =>
-        user.username.toLowerCase().includes(e.target.value.toLowerCase()),
-      ),
+      base.filter((user) => {
+        const field = searchField || "username";
+        const v = (user[field] || "").toString().toLowerCase();
+        return v.includes(lower);
+      }),
     );
   };
 
   const handleSort = () => {
-    // Sort mock users
-    setUsers(
-      [...users].sort((a, b) =>
-        sortValue.order === "desc"
-          ? b[sortValue.sortBy].localeCompare(a[sortValue.sortBy])
-          : a[sortValue.sortBy].localeCompare(b[sortValue.sortBy]),
-      ),
-    );
+    const sorted = [...users].sort((a, b) => {
+      const field = sortValue.sortBy;
+      const av = a[field] || "";
+      const bv = b[field] || "";
+      const aStr =
+        typeof av === "string" ? av.toLowerCase() : av.toString().toLowerCase();
+      const bStr =
+        typeof bv === "string" ? bv.toLowerCase() : bv.toString().toLowerCase();
+      if (sortValue.order === "desc") {
+        return bStr.localeCompare(aStr);
+      }
+      return aStr.localeCompare(bStr);
+    });
+    setUsers(sorted);
   };
 
   const handleView = (user) => {
@@ -235,6 +221,10 @@ const Members = () => {
   const handleBlock = (user) => {
     setModifyUser(user);
     setIsBlock(true);
+  };
+
+  const handleMemberChanged = () => {
+    fetchMembers();
   };
 
   return (
@@ -262,8 +252,9 @@ const Members = () => {
           <div className="flex-1 relative flex items-center">
             <input
               type="text"
-              placeholder="Search users..."
-              onKeyDown={handleSearchChange}
+              placeholder="Search members..."
+              value={search}
+              onChange={handleSearchChange}
               className="w-full pl-4 pr-32 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-100 focus:ring-2 focus:ring-teal-500 dark:focus:ring-teal-400"
             />
             <div className="absolute right-1 top-1 bottom-1">
@@ -362,7 +353,7 @@ const Members = () => {
         shouldCloseOnOverlayClick={true}
         shouldCloseOnEsc={true}
       >
-        <AddMember setIsOpen={setIsAdd} />
+        <AddMember setIsOpen={setIsAdd} onCompleted={handleMemberChanged} />
       </Modal>
 
       <Modal
@@ -381,7 +372,11 @@ const Members = () => {
         style={customModalStyles}
         contentLabel="Edit Member"
       >
-        <EditMember setIsEdit={setIsEdit} selectedUser={modifyUser} />
+        <EditMember
+          setIsEdit={setIsEdit}
+          selectedUser={modifyUser}
+          onCompleted={handleMemberChanged}
+        />
       </Modal>
 
       <Modal
@@ -390,7 +385,11 @@ const Members = () => {
         style={customModalStyles}
         contentLabel="Delete Member"
       >
-        <DeleteMember setIsDelete={setIsDelete} selectedUser={modifyUser} />
+        <DeleteMember
+          setIsDelete={setIsDelete}
+          selectedUser={modifyUser}
+          onCompleted={handleMemberChanged}
+        />
       </Modal>
 
       <BlockMemberModal

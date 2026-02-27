@@ -568,6 +568,19 @@ const deleteMember = asyncHandler(async (req, res) => {
   }
 });
 
+const getMembers = asyncHandler(async (req, res) => {
+  try {
+    const members = await Member.find()
+      .select(
+        "-password -refreshToken -passwordResetToken -passwordResetExpires",
+      )
+      .sort("-createdAt");
+    return res.json(members);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
 const changeMainStatus = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const { main_status } = req.body;
@@ -1092,6 +1105,7 @@ module.exports = {
   addMember,
   updateMember,
   deleteMember,
+  getMembers,
   changeMainStatus,
   getAllManagers,
   getManagerInfo,
