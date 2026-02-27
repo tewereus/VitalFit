@@ -220,12 +220,10 @@ const getUserSessions = asyncHandler(async (req, res) => {
   let userModel;
   if (req.user.role === "administrator") {
     userModel = "Admin";
-  } else if (req.user.role === "manager") {
-    userModel = "Manager";
-  } else if (req.user.role === "printer") {
-    userModel = "Printer";
-  } else if (req.user.role === "rider") {
-    userModel = "Rider";
+  } else if (req.user.role === "staff") {
+    userModel = "Staff";
+  } else if (req.user.role === "member") {
+    userModel = "Member";
   } else {
     userModel = "User";
   }
@@ -261,12 +259,10 @@ const revokeSession = asyncHandler(async (req, res) => {
   let userModel;
   if (req.user.role === "administrator") {
     userModel = "Admin";
-  } else if (req.user.role === "manager") {
-    userModel = "Manager";
-  } else if (req.user.role === "printer") {
-    userModel = "Printer";
-  } else if (req.user.role === "rider") {
-    userModel = "Rider";
+  } else if (req.user.role === "staff") {
+    userModel = "Staff";
+  } else if (req.user.role === "member") {
+    userModel = "Member";
   } else {
     userModel = "User";
   }

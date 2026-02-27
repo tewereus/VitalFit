@@ -1,5 +1,6 @@
 const Admin = require("../../models/users/userModel");
 const User = require("../../models/users/userModel");
+const Member = require("../../models/users/memberModel");
 const asyncHandler = require("express-async-handler");
 const { generateToken } = require("../../config/jwtToken");
 const validateMongoDbId = require("../../utils/validateMongoDbId");
@@ -27,6 +28,12 @@ const loginAdmin = asyncHandler(async (req, res) => {
   }
 
   if (findAdmin) {
+    if (findAdmin.role !== "administrator" && findAdmin.role !== "staff") {
+      return res
+        .status(403)
+        .json({ message: "Not authorized to access admin panel" });
+    }
+
     if (await findAdmin.isPasswordMatched(password)) {
       // Reset login attempts and lock status on successful login
       findAdmin.loginAttempts = 0;
@@ -485,15 +492,39 @@ const checkAdminPass = asyncHandler(async (req, res) => {
 });
 
 const addStaff = asyncHandler(async (req, res) => {
-  // const {id} = req.user
-  const { email } = req.body;
-  console.log(req.body);
+  const { email, role, membershipId } = req.body;
   try {
+    if (role === "member") {
+      const existingMemberByEmail = await Member.findOne({ email });
+      if (existingMemberByEmail) {
+        return res
+          .status(400)
+          .json({ message: "Member with this email already exists" });
+      }
+
+      if (membershipId) {
+        const existingMemberByMembershipId = await Member.findOne({
+          membershipId,
+        });
+        if (existingMemberByMembershipId) {
+          return res.status(400).json({
+            message: "Member with this membership id already exists",
+          });
+        }
+      }
+
+      const newMember = await Member.create(req.body);
+      return res.status(201).json(newMember);
+    }
+
     const staff = await User.findOne({ email });
-    if (staff) throw new Error("Staff with this email already exists");
-    const newStaff = await User.create(req.body); // check if it can be added with await staff.save()
-    await newStaff.save();
-    res.json(newStaff);
+    if (staff) {
+      return res
+        .status(400)
+        .json({ message: "Staff with this email already exists" });
+    }
+    const newStaff = await User.create(req.body);
+    return res.status(201).json(newStaff);
   } catch (error) {
     throw new Error(error);
   }

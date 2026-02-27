@@ -104,8 +104,14 @@ const AddMember = ({ setIsOpen }) => {
     setIsSubmitting(true);
     try {
       const data = { ...formData, role: "member" };
-      await dispatch(addStaff({ data })).unwrap();
-      toast.success("Member added successfully!");
+      const member = await dispatch(addStaff({ data })).unwrap();
+      if (member?.barcode) {
+        toast.success(
+          `Member added successfully. Barcode: ${member.barcode}`,
+        );
+      } else {
+        toast.success("Member added successfully!");
+      }
       setIsOpen(false);
     } catch (error) {
       toast.error(error?.message || "Failed to add member");

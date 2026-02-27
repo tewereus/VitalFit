@@ -14,7 +14,7 @@ const sessionSchema = mongoose.Schema(
     },
     userModel: {
       type: String,
-      enum: ["User", "Admin", "Manager", "Printer", "Rider"],
+      enum: ["User", "Admin", "Staff", "Member"],
       default: "User",
     },
     deviceInfo: {
