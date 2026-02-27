@@ -100,8 +100,23 @@ const toggleDarkMode = async (data) => {
 };
 
 const addStaff = async (data) => {
-  console.log(data);
   const response = await axiosPrivate.post(`/admin/add-staff`, data.data);
+  return response.data;
+};
+
+const addMember = async (data) => {
+  const response = await axiosPrivate.post(`/admin/members`, data.data);
+  return response.data;
+};
+
+const updateMember = async (data) => {
+  const { id, payload } = data;
+  const response = await axiosPrivate.put(`/admin/members/${id}`, payload);
+  return response.data;
+};
+
+const deleteMember = async (id) => {
+  const response = await axiosPrivate.delete(`/admin/members/${id}`);
   return response.data;
 };
 
@@ -116,6 +131,9 @@ const authService = {
   updatePassword,
   toggleDarkMode,
   addStaff,
+  addMember,
+  updateMember,
+  deleteMember,
 };
 
 export default authService;

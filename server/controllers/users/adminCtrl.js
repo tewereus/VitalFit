@@ -492,31 +492,8 @@ const checkAdminPass = asyncHandler(async (req, res) => {
 });
 
 const addStaff = asyncHandler(async (req, res) => {
-  const { email, role, membershipId } = req.body;
+  const { email } = req.body;
   try {
-    if (role === "member") {
-      const existingMemberByEmail = await Member.findOne({ email });
-      if (existingMemberByEmail) {
-        return res
-          .status(400)
-          .json({ message: "Member with this email already exists" });
-      }
-
-      if (membershipId) {
-        const existingMemberByMembershipId = await Member.findOne({
-          membershipId,
-        });
-        if (existingMemberByMembershipId) {
-          return res.status(400).json({
-            message: "Member with this membership id already exists",
-          });
-        }
-      }
-
-      const newMember = await Member.create(req.body);
-      return res.status(201).json(newMember);
-    }
-
     const staff = await User.findOne({ email });
     if (staff) {
       return res
@@ -525,6 +502,67 @@ const addStaff = asyncHandler(async (req, res) => {
     }
     const newStaff = await User.create(req.body);
     return res.status(201).json(newStaff);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+const addMember = asyncHandler(async (req, res) => {
+  const { email, membershipId } = req.body;
+  try {
+    const existingMemberByEmail = await Member.findOne({ email });
+    if (existingMemberByEmail) {
+      return res
+        .status(400)
+        .json({ message: "Member with this email already exists" });
+    }
+
+    if (membershipId) {
+      const existingMemberByMembershipId = await Member.findOne({
+        membershipId,
+      });
+      if (existingMemberByMembershipId) {
+        return res.status(400).json({
+          message: "Member with this membership id already exists",
+        });
+      }
+    }
+
+    const newMember = await Member.create(req.body);
+    return res.status(201).json(newMember);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+const updateMember = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  validateMongoDbId(id);
+  try {
+    const member = await Member.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!member) {
+      return res.status(404).json({ message: "Member not found" });
+    }
+
+    return res.json({ message: "Member updated successfully", member });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+const deleteMember = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  validateMongoDbId(id);
+  try {
+    const member = await Member.findByIdAndDelete(id);
+    if (!member) {
+      return res.status(404).json({ message: "Member not found" });
+    }
+    return res.json({ message: "Member deleted successfully", member });
   } catch (error) {
     throw new Error(error);
   }
@@ -1051,10 +1089,12 @@ module.exports = {
   getAllUsers,
   checkAdminPass,
   addStaff,
+  addMember,
+  updateMember,
+  deleteMember,
   changeMainStatus,
   getAllManagers,
   getManagerInfo,
-  deleteManager,
   updateManager,
   toggleDarkMode,
   handleRefreshToken,

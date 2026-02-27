@@ -10,11 +10,13 @@ const {
   getAllUsers,
   checkAdminPass,
   addStaff,
+  addMember,
+  updateMember,
+  deleteMember,
   changeMainStatus,
   getAllManagers,
   toggleDarkMode,
   getManagerInfo,
-  deleteManager,
   updateManager,
   handleRefreshToken,
   getSessions,
@@ -42,8 +44,10 @@ router.put("/update-password", adminAuthMiddleware, updatePassword);
 router.get("/all-users", adminAuthMiddleware, getAllUsers);
 router.post("/check-admin", adminAuthMiddleware, checkAdminPass);
 router.post("/add-staff", adminAuthMiddleware, addStaff);
+router.post("/members", adminAuthMiddleware, addMember);
+router.put("/members/:id", adminAuthMiddleware, updateMember);
+router.delete("/members/:id", adminAuthMiddleware, deleteMember);
 router.put("/get-staff/:id/update", adminAuthMiddleware, updateManager);
-router.delete("/get-staff/:id/delete", adminAuthMiddleware, deleteManager);
 router.post("/staff-status/:id", adminAuthMiddleware, changeMainStatus);
 router.get("/all-staffs", adminAuthMiddleware, getAllManagers);
 router.get("/get-staff/:id", adminAuthMiddleware, getManagerInfo);

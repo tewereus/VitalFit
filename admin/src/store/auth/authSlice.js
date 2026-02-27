@@ -119,6 +119,39 @@ export const addStaff = createAsyncThunk(
   }
 );
 
+export const addMember = createAsyncThunk(
+  "auth/add-member",
+  async (data, thunkAPI) => {
+    try {
+      return await authService.addMember(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const updateMember = createAsyncThunk(
+  "auth/update-member",
+  async (data, thunkAPI) => {
+    try {
+      return await authService.updateMember(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const deleteMember = createAsyncThunk(
+  "auth/delete-member",
+  async (id, thunkAPI) => {
+    try {
+      return await authService.deleteMember(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -338,6 +371,66 @@ export const authSlice = createSlice({
           action.payload?.message ||
           action.error?.message ||
           "Failed to add staff";
+        toast.error(state.message);
+      })
+      .addCase(addMember.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addMember.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.message = "Member added successfully";
+        toast.success(state.message);
+      })
+      .addCase(addMember.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.message =
+          action.payload?.message ||
+          action.error?.message ||
+          "Failed to add member";
+        toast.error(state.message);
+      })
+      .addCase(updateMember.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateMember.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.message = "Member updated successfully";
+        toast.success(state.message);
+      })
+      .addCase(updateMember.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.message =
+          action.payload?.message ||
+          action.error?.message ||
+          "Failed to update member";
+        toast.error(state.message);
+      })
+      .addCase(deleteMember.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteMember.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.message = "Member deleted successfully";
+        toast.success(state.message);
+      })
+      .addCase(deleteMember.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.message =
+          action.payload?.message ||
+          action.error?.message ||
+          "Failed to delete member";
         toast.error(state.message);
       });
   },

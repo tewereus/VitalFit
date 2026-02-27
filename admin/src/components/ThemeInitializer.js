@@ -9,16 +9,18 @@ const ThemeInitializer = () => {
   const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    // Set dark mode based on user preference in Redux state
+    const root = document.documentElement;
     if (user?.preference?.mode === "dark") {
+      root.classList.add("dark");
       document.body.classList.add("dark");
     } else if (user?.preference?.mode === "light") {
+      root.classList.remove("dark");
       document.body.classList.remove("dark");
     } else {
-      // If no preference is set, use system preference
       const prefersDark = window.matchMedia(
         "(prefers-color-scheme: dark)",
       ).matches;
+      root.classList.toggle("dark", prefersDark);
       document.body.classList.toggle("dark", prefersDark);
     }
   }, [user?.preference?.mode]);

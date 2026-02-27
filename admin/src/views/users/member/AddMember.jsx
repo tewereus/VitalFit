@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import {
   FiX,
@@ -22,7 +22,8 @@ import {
   FiCheck,
 } from "react-icons/fi";
 import { toast } from "react-hot-toast";
-import { addStaff } from "../../../store/auth/authSlice";
+import Barcode from "react-barcode";
+import { addMember } from "../../../store/auth/authSlice";
 
 const STEPS = [
   { name: "Personal", icon: FiUser },
@@ -34,6 +35,8 @@ const STEPS = [
 const AddMember = ({ setIsOpen }) => {
   const dispatch = useDispatch();
   const [activeStep, setActiveStep] = useState(0);
+  const [createdMember, setCreatedMember] = useState(null);
+  const barcodeContainerRef = useRef(null);
   const [formData, setFormData] = useState({
     // Personal
     fullname: "",
@@ -104,20 +107,40 @@ const AddMember = ({ setIsOpen }) => {
     setIsSubmitting(true);
     try {
       const data = { ...formData, role: "member" };
-      const member = await dispatch(addStaff({ data })).unwrap();
+      const member = await dispatch(addMember({ data })).unwrap();
+      setCreatedMember(member);
       if (member?.barcode) {
-        toast.success(
-          `Member added successfully. Barcode: ${member.barcode}`,
-        );
+        toast.success("Member added successfully with barcode");
       } else {
-        toast.success("Member added successfully!");
+        toast.success("Member added successfully");
       }
-      setIsOpen(false);
     } catch (error) {
       toast.error(error?.message || "Failed to add member");
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleDownloadBarcode = () => {
+    if (!createdMember?.barcode || !barcodeContainerRef.current) return;
+    const svg = barcodeContainerRef.current.querySelector("svg");
+    if (!svg) return;
+
+    const serializer = new XMLSerializer();
+    const source = serializer.serializeToString(svg);
+    const blob = new Blob([source], {
+      type: "image/svg+xml;charset=utf-8",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    const idPart =
+      createdMember.membershipId || createdMember._id || "member";
+    link.href = url;
+    link.download = `${idPart}-barcode.svg`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   const renderStepContent = () => {
@@ -393,9 +416,9 @@ const AddMember = ({ setIsOpen }) => {
       <div className="px-10 py-5 border-t bg-white dark:bg-gray-800 flex justify-between items-center">
         <button
           onClick={handlePrev}
-          disabled={activeStep === 0}
+          disabled={activeStep === 0 || createdMember}
           className={`px-6 py-3 rounded-xl font-semibold transition-all duration-200  ${
-            activeStep === 0
+            activeStep === 0 || createdMember
               ? "text-gray-300 cursor-not-allowed"
               : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
           }`}
@@ -403,23 +426,66 @@ const AddMember = ({ setIsOpen }) => {
           Back
         </button>
 
-        {activeStep < STEPS.length - 1 ? (
-          <button
-            onClick={handleNext}
-            className="px-8 py-3 cursor-pointer bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white rounded-xl font-semibold shadow-lg transition-all transform hover:-translate-y-0.5"
-          >
-            Next Step <FiChevronsRight className="inline ml-1" />
-          </button>
+        {!createdMember ? (
+          activeStep < STEPS.length - 1 ? (
+            <button
+              onClick={handleNext}
+              className="px-8 py-3 cursor-pointer bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white rounded-xl font-semibold shadow-lg transition-all transform hover:-translate-y-0.5"
+            >
+              Next Step <FiChevronsRight className="inline ml-1" />
+            </button>
+          ) : (
+            <button
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+              className="px-8 py-3 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white rounded-xl font-semibold shadow-lg transition-all transform hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? "Processing..." : "Complete Registration"}
+            </button>
+          )
         ) : (
-          <button
-            onClick={handleSubmit}
-            disabled={isSubmitting}
-            className="px-8 py-3 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white rounded-xl font-semibold shadow-lg transition-all transform hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed"
-          >
-            {isSubmitting ? "Processing..." : "Complete Registration"}
-          </button>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={handleDownloadBarcode}
+              className="px-6 py-3 cursor-pointer bg-gradient-to-r from-slate-700 to-slate-900 hover:from-slate-800 hover:to-black text-white rounded-xl font-semibold shadow-lg transition-all transform hover:-translate-y-0.5"
+            >
+              Download Barcode
+            </button>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="px-6 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-all duration-200"
+            >
+              Close
+            </button>
+          </div>
         )}
       </div>
+
+      {createdMember && createdMember.barcode && (
+        <div className="px-10 pb-6 bg-gray-50 dark:bg-gray-900/40 border-t dark:border-gray-700">
+          <div className="max-w-md mx-auto mt-4 rounded-2xl bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 p-4">
+            <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3">
+              Member Barcode
+            </h3>
+            <div
+              ref={barcodeContainerRef}
+              className="flex flex-col items-center justify-center space-y-2"
+            >
+              <Barcode
+                value={createdMember.barcode}
+                format="CODE128"
+                background="#ffffff"
+                height={80}
+                margin={0}
+              />
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                {createdMember.fullname} •{" "}
+                {createdMember.membershipId || createdMember.email}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

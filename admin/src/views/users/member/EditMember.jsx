@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { updateMember } from "../../../store/auth/authSlice";
 import {
   FiX,
   FiUser,
@@ -18,34 +20,6 @@ import {
   FiLock,
 } from "react-icons/fi";
 
-// Mock users
-const mockUsers = [
-  {
-    id: 1,
-    username: "john",
-    email: "john@email.com",
-    mobile: "123456789",
-    status: "active",
-    fullname: "John Doe",
-  },
-  {
-    id: 2,
-    username: "jane",
-    email: "jane@email.com",
-    mobile: "234567890",
-    status: "active",
-    fullname: "Jane Doe",
-  },
-  {
-    id: 3,
-    username: "blockeduser",
-    email: "blocked@email.com",
-    mobile: "345678901",
-    status: "blocked",
-    fullname: "Blocked User",
-  },
-];
-
 // Step definitions
 const STEPS = [
   { name: "Account", icon: FiUser },
@@ -55,30 +29,29 @@ const STEPS = [
 ];
 
 const EditMember = ({ setIsEdit, selectedUser }) => {
-  const user =
-    mockUsers.find((u) => u.username === selectedUser?.username) ||
-    mockUsers[0];
+  const dispatch = useDispatch();
+  const user = selectedUser || {};
 
   const [activeStep, setActiveStep] = useState(0);
   const [formData, setFormData] = useState({
     // Account
-    username: user.username,
+    username: user.username || "",
     fullname: user.fullname || "",
-    email: user.email,
-    mobile: user.mobile,
+    email: user.email || "",
+    mobile: user.mobile || "",
     // Membership
     membershipType: "",
-    startDate: "",
-    endDate: "",
-    accessLevel: "",
+    startDate: user.startDate ? user.startDate.split("T")[0] : "",
+    endDate: user.endDate ? user.endDate.split("T")[0] : "",
+    accessLevel: user.accessLevel || "",
     // Health
-    height: "",
-    weight: "",
-    fitnessGoals: "",
-    medicalConditions: "",
+    height: user.height || "",
+    weight: user.weight || "",
+    fitnessGoals: user.fitnessGoals || "",
+    medicalConditions: user.medicalConditions || "",
     // Access
-    membershipId: "",
-    rfid: "",
+    membershipId: user.membershipId || "",
+    rfid: user.rfid || "",
     password: "",
   });
 
@@ -122,11 +95,24 @@ const EditMember = ({ setIsEdit, selectedUser }) => {
 
   const handlePrev = () => setActiveStep((prev) => Math.max(prev - 1, 0));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateStep()) return;
-    console.log("Updated Data:", formData);
-    setIsEdit(false);
+    try {
+      const payload = { ...formData };
+      if (!payload.password) {
+        delete payload.password;
+      }
+      await dispatch(
+        updateMember({
+          id: user._id,
+          payload,
+        }),
+      ).unwrap();
+      setIsEdit(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const renderStepContent = () => {

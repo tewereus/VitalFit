@@ -1,28 +1,30 @@
+import { useDispatch } from "react-redux";
 import { FiX, FiAlertTriangle } from "react-icons/fi";
-// Gold theme mock data
-const mockUsers = [
-  { id: 1, username: "john" },
-  { id: 2, username: "jane" },
-  { id: 3, username: "blockeduser" },
-  { id: 4, username: "goldmember" },
-  { id: 5, username: "trialuser" },
-];
+import { deleteMember } from "../../../store/auth/authSlice";
 
 const DeleteMember = ({ setIsDelete, selectedUser }) => {
-  // Use mock data for deletion
-  const user =
-    mockUsers.find((u) => u.username === selectedUser?.username) ||
-    mockUsers[0];
+  const dispatch = useDispatch();
+  const user = selectedUser;
 
-  const handleDelete = () => {
-    // No backend call, just close modal
-    setIsDelete(false);
+  const handleDelete = async () => {
+    if (!user?._id) {
+      setIsDelete(false);
+      return;
+    }
+    try {
+      await dispatch(deleteMember(user._id)).unwrap();
+      setIsDelete(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-sm sm:max-w-md max-h-[90vh] overflow-y-auto">
       <div className="flex justify-between items-center px-4 py-4 sm:p-6 border-b dark:border-gray-700">
-        <h2 className="text-xl font-semibold dark:text-white">Delete User</h2>
+        <h2 className="text-xl font-semibold dark:text-white">
+          Delete Member
+        </h2>
         <button
           onClick={() => setIsDelete(false)}
           className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
@@ -40,7 +42,7 @@ const DeleteMember = ({ setIsDelete, selectedUser }) => {
         </div>
 
         <h3 className="mb-2 text-lg font-medium text-center dark:text-white">
-          Delete {user.username}
+          Delete {user?.fullname || user?.email || "member"}
         </h3>
 
         <p className="text-center text-gray-600 dark:text-gray-400 mb-6">
