@@ -27,7 +27,7 @@ const MemberDashboard = () => {
         {/* Total Members */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
           <div className="flex items-center">
-            <div className="p-3 rounded-full bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400 mr-4">
+            <div className="p-3 rounded-full bg-teal-100 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400 mr-4">
               <FaUsers className="w-6 h-6" />
             </div>
             <div>
@@ -84,7 +84,7 @@ const MemberDashboard = () => {
         {/* New Members (This Month) */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
           <div className="flex items-center">
-            <div className="p-3 rounded-full bg-yellow-300 dark:bg-yellow-700/30 text-yellow-800 dark:text-yellow-200 mr-4">
+            <div className="p-3 rounded-full bg-blue-300 dark:bg-blue-700/30 text-blue-800 dark:text-blue-200 mr-4">
               <FaUserClock className="w-6 h-6" />
             </div>
             <div>

@@ -1236,6 +1236,23 @@ const Dashboard = () => {
           </div>
         </div>
 
+        {/* Total Classes */}
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+                Total Staff
+              </p>
+              <p className="text-2xl font-bold text-gray-800 dark:text-white">
+                {overview?.totals?.classes?.toLocaleString() || 3}
+              </p>
+            </div>
+            <div className="p-3 bg-teal-100 dark:bg-teal-900/30 rounded-full">
+              <FaUsers className="text-teal-600 dark:text-teal-400 text-xl" />
+            </div>
+          </div>
+        </div>
+
         {/* Total Trainers */}
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between">
@@ -1249,23 +1266,6 @@ const Dashboard = () => {
             </div>
             <div className="p-3 bg-teal-100 dark:bg-teal-900/30 rounded-full">
               <FaUsers className="text-teal-600 dark:text-teal-400 text-xl" />
-            </div>
-          </div>
-        </div>
-
-        {/* Total Classes */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
-                Total Classes
-              </p>
-              <p className="text-2xl font-bold text-gray-800 dark:text-white">
-                {overview?.totals?.classes?.toLocaleString() || 0}
-              </p>
-            </div>
-            <div className="p-3 bg-teal-100 dark:bg-teal-900/30 rounded-full">
-              <FaBox className="text-teal-600 dark:text-teal-400 text-xl" />
             </div>
           </div>
         </div>
@@ -1351,7 +1351,7 @@ const Dashboard = () => {
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
-              Order Status Distribution
+              Payment Plan Distribution
             </h3>
             <FaShoppingCart className="text-gray-500" />
           </div>
