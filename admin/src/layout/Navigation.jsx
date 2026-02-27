@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -15,28 +15,30 @@ const Navigation = ({ onToggleSidebar, isSidebarOpen }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const isDarkMode = document.body.classList.contains("dark");
+  const [isDarkMode, setIsDarkMode] = useState(
+    () =>
+      user?.preference?.mode === "dark" ||
+      document.documentElement.classList.contains("dark"),
+  );
+
+  useEffect(() => {
+    if (user?.preference?.mode) {
+      const isDark = user.preference.mode === "dark";
+      setIsDarkMode(isDark);
+      document.documentElement.classList.toggle("dark", isDark);
+    }
+  }, [user?.preference?.mode]);
 
   const handleTheme = () => {
-    console.log(user);
-    const currentMode =
-      user?.preference?.mode || (isDarkMode ? "dark" : "light");
-    const newMode = currentMode === "dark" ? "light" : "dark";
+    const newMode = isDarkMode ? "light" : "dark";
+    setIsDarkMode(!isDarkMode);
+    document.documentElement.classList.toggle("dark", !isDarkMode);
 
-    const data = {
-      preference: {
-        mode: newMode,
-      },
-    };
-
-    dispatch(toggleDarkMode(data))
-      .unwrap()
-      .then(() => {
-        document.body.classList.toggle("dark", newMode === "dark");
-      })
-      .catch((error) => {
-        console.error("Failed to update dark mode:", error);
-      });
+    if (user) {
+      dispatch(toggleDarkMode({ preference: { mode: newMode } }))
+        .unwrap()
+        .catch((error) => console.error("Failed to update dark mode:", error));
+    }
   };
 
   const handleLogout = () => {

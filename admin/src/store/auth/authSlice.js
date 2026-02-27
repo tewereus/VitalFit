@@ -18,7 +18,7 @@ export const adminLogin = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
@@ -42,7 +42,7 @@ export const refreshToken = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const allUsers = createAsyncThunk("auth/get-users", async (thunkAPI) => {
@@ -61,7 +61,7 @@ export const checkAdminPass = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const updateProfile = createAsyncThunk(
@@ -72,7 +72,7 @@ export const updateProfile = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const uploadProfile = createAsyncThunk(
@@ -83,7 +83,7 @@ export const uploadProfile = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const updatePassword = createAsyncThunk(
@@ -94,7 +94,7 @@ export const updatePassword = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const toggleDarkMode = createAsyncThunk(
@@ -105,7 +105,7 @@ export const toggleDarkMode = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const addStaff = createAsyncThunk(
@@ -116,7 +116,7 @@ export const addStaff = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const addMember = createAsyncThunk(
@@ -127,7 +127,7 @@ export const addMember = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const updateMember = createAsyncThunk(
@@ -138,7 +138,7 @@ export const updateMember = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const deleteMember = createAsyncThunk(
@@ -149,7 +149,7 @@ export const deleteMember = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const authSlice = createSlice({
@@ -345,7 +345,6 @@ export const authSlice = createSlice({
         if (action.payload.preference && state.user) {
           state.user.preference.mode = action.payload.preference.mode;
         }
-        toast.success(state.message);
       })
       .addCase(toggleDarkMode.rejected, (state, action) => {
         state.isLoading = false;

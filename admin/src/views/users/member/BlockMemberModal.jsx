@@ -49,7 +49,6 @@ const BlockMemberModal = ({
 
   useEffect(() => {
     if (userToBlock) {
-      console.log(userToBlock);
       if (isCurrentlyBlocked === true && blockedUntil) {
         const durationInMinutes = Math.round(
           (new Date(blockedUntil) - new Date()) / (1000 * 60),

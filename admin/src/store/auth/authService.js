@@ -94,7 +94,6 @@ const updatePassword = async (data) => {
 };
 
 const toggleDarkMode = async (data) => {
-  console.log(data);
   const response = await axiosPrivate.put(`/admin/dark-mode`, data);
   return response.data;
 };
