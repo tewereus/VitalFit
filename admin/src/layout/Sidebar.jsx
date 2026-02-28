@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "../styles/enhanced-scrollbar.css";
 import {
   FaChartBar,
@@ -10,14 +10,28 @@ import {
   FaCog,
   FaMoneyBillWave,
   FaUserShield,
+  FaSignOutAlt,
 } from "react-icons/fa";
+import { logout } from "../store/auth/authSlice";
 
 const Sidebar = ({ onClose, isMobile }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const [isUsersOpen, setIsUsersOpen] = useState(false);
   const [isSecurityOpen, setIsSecurityOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
+
+  const handleLogout = () => {
+    dispatch(logout())
+      .unwrap()
+      .then(() => {
+        navigate("/");
+      })
+      .catch((error) => {
+        navigate("/");
+      });
+  };
 
   const isActive = (path) => {
     if (path === "dashboard") {
@@ -131,12 +145,28 @@ const Sidebar = ({ onClose, isMobile }) => {
         )}
 
         {user?.role === "staff" && (
-          <MenuItem
-            icon={FaUsers}
-            text="Members"
-            onClick={() => navigate("members")}
-          />
+          <>
+            <MenuItem
+              icon={FaUsers}
+              text="Members"
+              onClick={() => navigate("members")}
+            />
+            <MenuItem
+              icon={FaMoneyBillWave}
+              text="Transactions"
+              onClick={() => navigate("transactions")}
+            />
+          </>
         )}
+        <button
+          onClick={handleLogout}
+          className=" w-full flex items-center px-4 py-2.5 text-red-600 dark:text-red-400
+                     hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors"
+          aria-label="Logout"
+        >
+          <FaSignOutAlt className="w-5 h-5 sm:mr-3" />
+          <span className="hidden sm:inline">Logout</span>
+        </button>
       </div>
     </div>
   );

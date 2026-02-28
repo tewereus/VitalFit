@@ -44,7 +44,14 @@ const router = createBrowserRouter([
       },
       { path: "staffs", element: <Staff /> },
       { path: "trainers", element: <Trainer /> },
-      { path: "transactions", element: <Transactions /> },
+      {
+        path: "transactions",
+        element: (
+          <PrivateRoutes allowedRoles={["administrator", "staff"]}>
+            <Transactions />
+          </PrivateRoutes>
+        ),
+      },
       { path: "settings", element: <Settings /> },
       { path: "sessions", element: <SessionManagement /> },
     ],
